@@ -236,9 +236,11 @@ landing page, and deploying to GitHub Pages / Vercel / Netlify / Cloudflare.
 
 ## 🌿 Branches
 
-- `master` — the **vanilla CSS** version of the blog (no Tailwind).
-- `feat/tailwind-rewrite` — this **Tailwind v4** version (default working
-  branch). Merge into `master` once you're happy with it.
+- `main` — the default branch with all current work (Tailwind v4, docs,
+  Cloudflare deployment, rebrand).
+- `feat/tailwind-rewrite` — the older feature branch where the Tailwind
+  rewrite was developed. It's already merged into `main` and is safe to
+  delete.
 
 ---
 
