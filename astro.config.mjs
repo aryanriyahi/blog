@@ -1,35 +1,30 @@
 // @ts-check
-
+import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
-import { defineConfig, fontProviders } from 'astro/config';
+
+import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
-	integrations: [mdx(), sitemap()],
-	fonts: [
-		{
-			provider: fontProviders.local(),
-			name: 'Atkinson',
-			cssVariable: '--font-atkinson',
-			fallbacks: ['sans-serif'],
-			options: {
-				variants: [
-					{
-						src: ['./src/assets/fonts/atkinson-regular.woff'],
-						weight: 400,
-						style: 'normal',
-						display: 'swap',
-					},
-					{
-						src: ['./src/assets/fonts/atkinson-bold.woff'],
-						weight: 700,
-						style: 'normal',
-						display: 'swap',
-					},
-				],
-			},
-		},
-	],
+  site: 'https://aryan.example.com',
+  integrations: [mdx(), icon()],
+  markdown: {
+    shikiConfig: {
+      // `themes` (plural) + `defaultColor: false` makes Shiki emit
+      // --shiki-dark / --shiki-light CSS variables on each token so the
+      // code blocks follow the page theme toggle (see global.css).
+      themes: {
+        dark: 'github-dark',
+        light: 'github-light',
+      },
+      defaultColor: false,
+    },
+  },
+  i18n: {
+    defaultLocale: "fa",
+    locales: ["fa", "en"],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  }
 });
