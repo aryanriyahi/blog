@@ -11,24 +11,25 @@ const role = AUTHOR.role[lang as keyof typeof AUTHOR.role] ?? AUTHOR.role.en;
 const bio = AUTHOR.bio[lang as keyof typeof AUTHOR.bio] ?? AUTHOR.bio.en;
 ---
 
-<div class="profile-card">
-    <div class="avatar">
+<div class="flex flex-col items-center text-center">
+    <div class="size-[300px] rounded-full overflow-hidden mb-6 border border-accent max-[859px]:hidden">
         <Image
             src={avatarImage}
             alt={`${AUTHOR.name} profile picture`}
             width={300}
             height={300}
             loading="eager"
+            class="w-full h-full object-cover"
         />
     </div>
 
-    <div class="info">
-        <h2>{AUTHOR.name}</h2>
-        <span class="role">{role}</span>
-        <p class="bio">{bio}</p>
+    <div>
+        <h2 class="text-3xl mb-1 text-heading">{AUTHOR.name}</h2>
+        <span class="block text-sm text-accent font-semibold mb-4">{role}</span>
+        <p class="text-[0.95rem] leading-relaxed text-soft mb-6 break-words">{bio}</p>
     </div>
 
-    <div class="socials">
+    <div class="flex flex-wrap gap-4 justify-center">
         {
             SOCIALS.map((social) => {
                 const href =
@@ -40,6 +41,7 @@ const bio = AUTHOR.bio[lang as keyof typeof AUTHOR.bio] ?? AUTHOR.bio.en;
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={social.label}
+                        class="flex items-center justify-center size-10 rounded-full bg-border-faint text-light text-xl transition-all duration-200 hover:bg-accent hover:text-white hover:-translate-y-0.5"
                     >
                         <Icon name={social.icon} />
                     </a>
@@ -48,84 +50,3 @@ const bio = AUTHOR.bio[lang as keyof typeof AUTHOR.bio] ?? AUTHOR.bio.en;
         }
     </div>
 </div>
-
-<style>
-    .profile-card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 0;
-    }
-
-    .avatar {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-        border: 1px solid var(--accent);
-    }
-
-    .avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .info h2 {
-        font-size: 1.8rem;
-        margin-bottom: 0.2rem;
-        color: var(--heading-color);
-    }
-
-    .role {
-        display: block;
-        font-size: 0.9rem;
-        color: var(--accent);
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .bio {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: var(--text-soft);
-        margin-bottom: 1.5rem;
-        word-break: break-word;
-        overflow-wrap: break-word;
-    }
-
-    .socials {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-    }
-
-    .socials a {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--border-faint);
-        color: var(--light);
-        font-size: 1.2rem;
-        transition: all var(--transition-speed) ease;
-    }
-
-    .socials a:hover {
-        background: var(--accent);
-        color: #ffffff;
-        transform: translateY(-2px);
-    }
-
-    @media (max-width: 859px) {
-        .avatar {
-            display: none;
-        }
-    }
-</style>

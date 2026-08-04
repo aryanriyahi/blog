@@ -37,84 +37,25 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1] || a[0].
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-	<section class="tags-header">
+	<section class="mb-12">
 		<h1>{t('tags.title')}</h1>
 		<p>{t('tags.description')}</p>
 	</section>
 
-	<section class="tags-container">
+	<section>
 		{sortedTags.length > 0 ? (
-			<div class="tags-grid">
+			<div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 mt-4 sm:gap-6">
 				{sortedTags.map(([tag, count]) => (
-					<a href={getRelativeLocaleUrl(currentLang, `tags/${tag}`)} class="tag-card">
-						<span class="tag-name">#{tag}</span>
-						<span class="tag-count">
+					<a href={getRelativeLocaleUrl(currentLang, `tags/${tag}`)} class="group flex flex-col py-5 px-6 bg-bg-panel border border-accent-tint rounded-lg no-underline transition-all duration-200 hover:bg-bg-hover hover:border-light hover:-translate-y-0.5">
+						<span class="text-[1.2rem] font-semibold text-light mb-1 transition-colors duration-200 group-hover:text-heading">#{tag}</span>
+						<span class="text-[0.85rem] text-faint">
 							{count} {t('tags.postsCount')}
 						</span>
 					</a>
 				))}
 			</div>
 		) : (
-			<p class="no-tags">{currentLang === 'fa' ? 'برچسبی یافت نشد.' : 'No tags found.'}</p>
+			<p class="text-faint italic">{currentLang === 'fa' ? 'برچسبی یافت نشد.' : 'No tags found.'}</p>
 		)}
 	</section>
 </BaseLayout>
-
-
-<style>
-	.tags-header {
-		margin-bottom: 3rem;
-	}
-
-	.tags-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-		gap: 1rem;
-		margin-top: 1rem;
-	}
-
-	@media (min-width: 640px) {
-		.tags-grid {
-			gap: 1.5rem;
-		}
-	}
-
-	.tag-card {
-		display: flex;
-		flex-direction: column;
-		padding: 1.25rem 1.5rem;
-		background: var(--bg-panel);
-		border: 1px solid var(--accent-tint);
-		border-radius: 8px;
-		text-decoration: none;
-		transition: all var(--transition-speed) ease;
-	}
-
-	.tag-card:hover {
-		background: var(--bg-hover);
-		border-color: var(--light);
-		transform: translateY(-2px);
-	}
-
-	.tag-name {
-		font-size: 1.2rem;
-		font-weight: 600;
-		color: var(--light);
-		margin-bottom: 0.25rem;
-		transition: color var(--transition-speed) ease;
-	}
-
-	.tag-card:hover .tag-name {
-		color: var(--heading-color);
-	}
-
-	.tag-count {
-		font-size: 0.85rem;
-		color: var(--text-faint);
-	}
-
-	.no-tags {
-		color: var(--text-faint);
-		font-style: italic;
-	}
-</style>

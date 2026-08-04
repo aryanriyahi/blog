@@ -21,84 +21,13 @@ const content = {
 ---
 
 <BaseLayout title={content.title} description={content.sub}>
-    <div class="not-found">
-        <span class="code">404</span>
-        <h1>{content.sub}</h1>
-        <p>{content.body}</p>
-        <div class="actions">
-            <a href={content.homeHref}>{content.home}</a>
-            <a href={content.archiveHref} class="secondary">{content.archive}</a>
+    <div class="flex flex-col items-start justify-center min-h-[60vh] gap-6">
+        <span class="text-[clamp(6rem,15vw,12rem)] font-bold leading-none text-transparent tracking-[-0.05em] select-none [-webkit-text-stroke:2px_var(--accent-tint-strong)]">404</span>
+        <h1 class="text-[clamp(1.5rem,4vw,2.5rem)] mt-0 text-heading">{content.sub}</h1>
+        <p class="text-lg text-muted max-w-[480px] leading-[1.7] mb-0">{content.body}</p>
+        <div class="flex gap-4 flex-wrap mt-2">
+            <a href={content.homeHref} class="px-[1.4rem] py-[0.6rem] rounded-md text-[0.95rem] font-semibold transition-all duration-200 no-underline bg-accent text-white hover:bg-light hover:text-bg">{content.home}</a>
+            <a href={content.archiveHref} class="px-[1.4rem] py-[0.6rem] rounded-md text-[0.95rem] font-semibold transition-all duration-200 no-underline text-light border border-accent-border hover:border-light hover:text-heading">{content.archive}</a>
         </div>
     </div>
 </BaseLayout>
-
-<style>
-    .not-found {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        min-height: 60vh;
-        gap: 1.5rem;
-    }
-
-    .code {
-        font-size: clamp(6rem, 15vw, 12rem);
-        font-weight: 700;
-        line-height: 1;
-        color: transparent;
-        -webkit-text-stroke: 2px var(--accent-tint-strong);
-        letter-spacing: -0.05em;
-        user-select: none;
-    }
-
-    h1 {
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        margin-top: 0;
-        color: var(--heading-color);
-    }
-
-    p {
-        font-size: 1.1rem;
-        color: var(--text-muted);
-        max-width: 480px;
-        line-height: 1.7;
-        margin-bottom: 0;
-    }
-
-    .actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-    }
-
-    .actions a {
-        padding: 0.6rem 1.4rem;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        transition: all var(--transition-speed) ease;
-        text-decoration: none;
-    }
-
-    .actions a:not(.secondary) {
-        background: var(--accent);
-        color: #ffffff;
-    }
-
-    .actions a:not(.secondary):hover {
-        background: var(--light);
-        color: var(--bg-color);
-    }
-
-    .actions a.secondary {
-        color: var(--light);
-        border: 1px solid var(--accent-border);
-    }
-
-    .actions a.secondary:hover {
-        border-color: var(--light);
-        color: var(--heading-color);
-    }
-</style>
