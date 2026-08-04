@@ -24,49 +24,50 @@ if (isPost && route) {
 	}
 }
 ---
-<header class="site-header">
-	<nav>
-		<div class="logo">
-			<a href={getRelativeLocaleUrl(lang, '')}>{SITE_CONFIG.title}</a>
+
+<header class="w-[var(--site-width)] py-6">
+	<nav class="flex flex-wrap justify-between items-center gap-3 sm:flex-nowrap">
+		<div>
+			<a href={getRelativeLocaleUrl(lang, '')} class="text-2xl font-bold text-heading tracking-tight hover:text-accent">{SITE_CONFIG.title}</a>
 		</div>
-		<div class="links">
-			<a href={getRelativeLocaleUrl(lang, '')}>{t('nav.home')}</a>
-			<a href={getRelativeLocaleUrl(lang, 'archive')}>{t('nav.archive')}</a>
-			<a href={getRelativeLocaleUrl(lang, 'tags')}>{t('nav.tags')}</a>
-			<a href={getRelativeLocaleUrl(lang, 'about')}>{t('nav.about')}</a>
+		<div class="flex gap-6 order-3 w-full justify-center sm:order-none sm:w-auto sm:justify-start">
+			<a href={getRelativeLocaleUrl(lang, '')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.home')}</a>
+			<a href={getRelativeLocaleUrl(lang, 'archive')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.archive')}</a>
+			<a href={getRelativeLocaleUrl(lang, 'tags')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.tags')}</a>
+			<a href={getRelativeLocaleUrl(lang, 'about')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.about')}</a>
 		</div>
-		<div class="header-actions">
-			<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
+		<div class="flex items-center gap-3 ms-auto sm:ms-0">
+			<button id="theme-toggle" class="theme-toggle flex items-center justify-center size-8 text-[1.15rem] rounded-md border border-border-faint bg-bg-panel text-muted cursor-pointer p-0 transition-all duration-200 hover:text-heading hover:bg-bg-hover hover:border-border" type="button" aria-label="Toggle color theme" title="Toggle theme">
 				<Icon name="mdi:weather-sunny" class="icon-sun" />
 				<Icon name="mdi:weather-night" class="icon-moon" />
 			</button>
 			<div class="lang-switcher">
-				<ul>
-				{Object.entries(languages).map(([abbr, label]) => {
-					let targetRoute = route || '';
-					
-					if (targetRoute.startsWith('blog/') && lang !== abbr) {
-						let matchedPost;
-						if (currentTranslationKey) {
-							matchedPost = allPosts.find(p => p.id.startsWith(`${abbr}/`) && p.data.translationKey === currentTranslationKey);
+				<ul class="flex gap-2 list-none m-0 p-0">
+					{Object.entries(languages).map(([abbr, label]) => {
+						let targetRoute = route || '';
+						
+						if (targetRoute.startsWith('blog/') && lang !== abbr) {
+							let matchedPost;
+							if (currentTranslationKey) {
+								matchedPost = allPosts.find(p => p.id.startsWith(`${abbr}/`) && p.data.translationKey === currentTranslationKey);
+							}
+							
+							if (matchedPost) {
+								const targetSlug = matchedPost.id.replace(`${abbr}/`, '');
+								targetRoute = `blog/${targetSlug}/`;
+							} else {
+								targetRoute = 'archive/';
+							}
 						}
 						
-						if (matchedPost) {
-							const targetSlug = matchedPost.id.replace(`${abbr}/`, '');
-							targetRoute = `blog/${targetSlug}/`;
-						} else {
-							targetRoute = 'archive/';
-						}
-					}
-					
-					return (
-					<li>
-						<a href={getRelativeLocaleUrl(abbr, targetRoute)} class={lang === abbr ? 'active' : ''}>
-							{abbr.toUpperCase()}
-						</a>
-					</li>
+						return (
+						<li>
+							<a href={getRelativeLocaleUrl(abbr, targetRoute)} class={`text-[0.85rem] font-semibold px-[0.4rem] py-[0.2rem] rounded hover:text-heading hover:bg-bg-hover ${lang === abbr ? 'text-bg bg-light' : 'text-faint'}`}>
+								{abbr.toUpperCase()}
+							</a>
+						</li>
 					);
-				})}
+					})}
 				</ul>
 			</div>
 		</div>
@@ -92,129 +93,3 @@ if (isPost && route) {
 		});
 	}
 </script>
-
-
-<style>
-	.site-header {
-		width: var(--site-width);
-		padding: 1.5rem 0;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	nav {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
-	.logo a {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: var(--heading-color);
-		letter-spacing: -0.02em;
-	}
-	
-	.logo a:hover {
-		color: var(--accent);
-	}
-
-	.links {
-		display: flex;
-		gap: 1.5rem;
-		/* On mobile this wraps below logo/lang row */
-		order: 3;
-		width: 100%;
-		justify-content: center;
-	}
-
-	.links a {
-		font-size: 0.95rem;
-		font-weight: 500;
-		color: var(--light);
-	}
-
-	.links a:hover {
-		color: var(--heading-color);
-	}
-
-	.header-actions {
-		/* Stays right side with logo on mobile */
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		margin-inline-start: auto;
-	}
-
-	.theme-toggle {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 32px;
-		height: 32px;
-		font-size: 1.15rem;
-		border-radius: 6px;
-		border: 1px solid var(--border-faint);
-		background: var(--bg-panel);
-		color: var(--text-muted);
-		cursor: pointer;
-		padding: 0;
-		transition: all var(--transition-speed) ease;
-	}
-
-	.theme-toggle:hover {
-		color: var(--heading-color);
-		background: var(--bg-hover);
-		border-color: var(--border);
-	}
-
-	.theme-toggle:focus-visible {
-		outline: 2px dashed var(--accent);
-		outline-offset: 2px;
-	}
-
-	.lang-switcher ul {
-		display: flex;
-		gap: 0.5rem;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.lang-switcher a {
-		font-size: 0.85rem;
-		font-weight: 600;
-		color: var(--text-faint);
-		padding: 0.2rem 0.4rem;
-		border-radius: 4px;
-	}
-
-	.lang-switcher a:hover {
-		color: var(--heading-color);
-		background: var(--bg-hover);
-	}
-
-	.lang-switcher a.active {
-		color: var(--bg-color);
-		background: var(--light);
-	}
-
-	/* Desktop: restore three-column flex, no wrapping */
-	@media (min-width: 640px) {
-		nav {
-			flex-wrap: nowrap;
-		}
-
-		.links {
-			order: unset;
-			width: auto;
-			justify-content: flex-start;
-		}
-
-		.header-actions {
-			margin-inline-start: 0;
-		}
-	}
-</style>

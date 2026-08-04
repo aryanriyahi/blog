@@ -37,23 +37,23 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-	<section class="archive-header">
+	<section class="mb-12">
 		<h1>{t('archive.title')}</h1>
 		<p>{t('archive.description')}</p>
 	</section>
 
-	<section class="archive-list">
+	<section>
 		{years.map((year) => (
-			<div class="year-group">
-				<h2 class="year-label">{year}</h2>
-				<ul>
+			<div class="mb-12">
+				<h2 class="text-[0.85rem] font-bold tracking-[0.12em] uppercase text-accent mb-3 mt-0 pb-2 border-b border-accent-border">{year}</h2>
+				<ul class="list-none p-0 m-0">
 					{postsByYear[year].map((post) => {
 						const slugWithoutLang = post.id.replace(`${currentLang}/`, '');
 						return (
-							<li>
-								<a href={getRelativeLocaleUrl(currentLang, `blog/${slugWithoutLang}`)}>
-									<span class="title">{post.data.title}</span>
-									<span class="date">
+							<li class="mb-0">
+								<a href={getRelativeLocaleUrl(currentLang, `blog/${slugWithoutLang}`)} class="group flex flex-col no-underline py-3 border-b border-border-faint transition-all duration-200 hover:ps-2 sm:flex-row sm:justify-between sm:items-center">
+									<span class="text-[clamp(1rem,2.5vw,1.1rem)] font-semibold text-light transition-colors duration-200 group-hover:text-text">{post.data.title}</span>
+									<span class="text-[0.85rem] text-faint mt-[0.15rem] sm:mt-0 sm:shrink-0 sm:ms-4">
 										{post.data.pubDate.toLocaleDateString(currentLang, {
 											month: 'long',
 											day: 'numeric',
@@ -68,80 +68,3 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 		))}
 	</section>
 </BaseLayout>
-
-
-<style>
-	.archive-header {
-		margin-bottom: 3rem;
-	}
-
-	.year-group {
-		margin-bottom: 3rem;
-	}
-
-	.year-label {
-		font-size: 0.85rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--accent);
-		margin-bottom: 0.75rem;
-		margin-top: 0;
-		padding-bottom: 0.5rem;
-		border-bottom: 1px solid var(--accent-border);
-	}
-
-	ul {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	li {
-		margin-bottom: 0;
-	}
-
-	li a {
-		display: flex;
-		flex-direction: column;
-		text-decoration: none;
-		padding: 0.75rem 0;
-		border-bottom: 1px solid var(--border-faint);
-		transition: all var(--transition-speed) ease;
-	}
-
-	li a:hover .title {
-		color: var(--text-color);
-	}
-
-	li a:hover {
-		padding-left: 0.5rem;
-	}
-
-	.title {
-		font-size: clamp(1rem, 2.5vw, 1.1rem);
-		font-weight: 600;
-		color: var(--light);
-		transition: color var(--transition-speed) ease;
-	}
-
-	.date {
-		font-size: 0.85rem;
-		color: var(--text-faint);
-		margin-top: 0.15rem;
-	}
-
-	@media (min-width: 640px) {
-		li a {
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
-		}
-
-		.date {
-			margin-top: 0;
-			flex-shrink: 0;
-			margin-left: 1rem;
-		}
-	}
-</style>
