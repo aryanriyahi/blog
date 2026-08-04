@@ -6,7 +6,7 @@
 
 # The name of your Pages project (shown in the dashboard URL as
 # https://<name>.pages.dev)
-name = "aryan-blog"
+name = "blog"
 
 # A pinned compatibility date for the Workers runtime (only relevant if
 # you later add Pages Functions / server-side handlers).
