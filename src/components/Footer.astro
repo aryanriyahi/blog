@@ -1,22 +1,8 @@
 ---
-import { getLangFromUrl } from "../i18n/utils";
-import { AUTHOR } from "../config";
-
-const today = new Date();
-const lang = getLangFromUrl(Astro.url);
-
-// Get the footer text for the current language
-const footerText = {
-	fa: "مینیمال. کاربردی. ارزش اشتراک‌گذاری.",
-	en: "Minimal. Practical. Worth Sharing.",
-};
-
-const text = footerText[lang as keyof typeof footerText] || footerText.en;
 ---
 
 <footer class="w-[var(--site-width)] py-8 text-center border-t border-border mt-16">
-	<p class="text-light text-sm m-0 opacity-80">
-		&copy; {today.getFullYear()}
-		{AUTHOR.name}. {text}
-	</p>
+	<p class="text-light text-sm m-0 opacity-80">&copy; 2026 Aryan's Blog</p>
 </footer>
+
+

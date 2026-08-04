@@ -1,60 +1,54 @@
 /**
  * Aryan's Blog - Site Configuration
  * ----------------------------------------
- * Temayı kişiselleştirmek için bu dosyayı düzenleyin.
  * Edit this file to personalize your site.
  */
 
 export const SITE_CONFIG = {
-  /** Sitenin başlığı / Site title */
+  /** Site title */
   title: "Aryan's Blog",
 
-  /** Sitenin açıklaması / Site description */
+  /** Site description */
   description: 'A raw, flat minimalist blog built on the philosophy that simplicity is depth.',
 
-  /** Sitenin adresi / Site URL */
-  url: 'https://aryan.example.com',
+  /** Site URL */
+  url: 'https://blog.aryanriyahi.workers.dev/',
 };
 
 export const AUTHOR = {
-  /** Adınız / Your name */
+  /** Your name */
   name: 'Aryan',
 
-  /** Rolünüz / Your role */
+  /** Your role */
   role: {
-    fa: 'توسعه‌دهنده نرم‌افزار',
-    en: 'Software Developer',
+    fa: 'مهندس نرم‌افزار',
+    en: 'Software Engineer',
   },
 
-  /** Kısa biyografiniz / Your short bio */
+  /** Your short bio */
   bio: {
     fa: 'توسعه‌دهنده‌ای علاقه‌مند به فناوری‌های وب مدرن و مشارکت در پروژه‌های متن‌باز. اینجا پروژه‌ها و نوشته‌هایم را به اشتراک می‌گذارم.',
     en: 'A developer interested in modern web technologies and open source projects. Documenting projects and posts here.',
   },
 
-  /** Profil fotoğrafı yolu / Profile picture path (/src/assets klasöründen / from /src/assets folder) */
+  /** Profile picture path (from /src/assets folder) */
   avatar: '/profile.jpg',
 };
 
 export const SOCIALS = [
   {
     label: 'Mail',
-    href: 'mailto:aryan@example.com',
+    href: 'mailto:aryanriyahi@gmail.com',
     icon: 'mdi:email',
   },
   {
     label: 'GitHub',
-    href: 'https://github.com/aryan',
+    href: 'https://github.com/aryanriyahi',
     icon: 'mdi:github',
   },
   {
-    label: 'X',
-    href: 'https://x.com/aryan',
-    icon: 'mdi:twitter',
-  },
-  {
     label: 'LinkedIn',
-    href: 'https://linkedin.com/in/aryan',
+    href: 'https://linkedin.com/in/aryan-riyahi',
     icon: 'mdi:linkedin',
   },
   {
