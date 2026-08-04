@@ -1,8 +1,8 @@
 # Blog Documentation
 
-A practical, beginner-friendly guide to running and customizing your Astro blog.
-You have zero Astro experience — these docs assume that and explain everything
-step by step.
+A practical, beginner-friendly guide to running and customizing this Persian/
+English Astro blog. These docs assume zero Astro experience and explain
+everything step by step.
 
 Start with the **Project overview**, then read the rest in any order as you
 need each topic.
@@ -11,14 +11,15 @@ need each topic.
 
 | # | Guide | What you'll learn |
 |---|-------|-------------------|
-| 1 | [Project overview](./01-project-overview.md) | How the project is laid out and how a Markdown file becomes a web page |
+| 1 | [Project overview](./01-project-overview.md) | How the project is laid out, how a Markdown file becomes a web page, bilingual routes |
 | 2 | [Running locally](./02-running-locally.md) | Start the dev server, build the site, preview your build |
-| 3 | [Writing a blog post](./03-writing-a-post.md) | Create a post, frontmatter fields, Markdown features, add images |
-| 4 | [Modifying the layout](./04-modifying-the-layout.md) | Change the post page, global styles, colors, fonts, components |
-| 5 | [Modifying the landing page](./05-modifying-the-landing-page.md) | Edit the homepage, About page, header nav, footer, site name |
-| 6 | [Deploy to GitHub Pages](./06-deploy-github-pages.md) | Publish for free on `username.github.io` |
+| 3 | [Writing a blog post](./03-writing-a-post.md) | Create Persian/English posts, frontmatter, translation keys, images |
+| 4 | [Modifying the layout](./04-modifying-the-layout.md) | The post page, Tailwind utilities, theme colors, dark/light toggle |
+| 5 | [Modifying the landing page](./05-modifying-the-landing-page.md) | Homepage, About page, header nav, footer, site name |
+| 6 | [Deploy to GitHub Pages](./06-deploy-github-pages.md) | Publish free on `username.github.io` |
 | 7 | [Deploy to Vercel](./07-deploy-vercel.md) | Publish on Vercel (custom domains, instant previews) |
 | 8 | [Deploy to Netlify](./08-deploy-netlify.md) | Publish on Netlify (custom domains, instant previews) |
+| 9 | [Deploy to Cloudflare Pages](./09-deploy-cloudflare.md) | Publish on Cloudflare (global CDN, free HTTPS, previews) |
 
 ## Quick reference — common commands
 
@@ -33,16 +34,24 @@ need each topic.
 
 | What | Where |
 |------|-------|
-| Your posts | `src/content/blog/*.md` |
-| Site name & description | `src/consts.ts` |
-| Homepage | `src/pages/index.astro` |
+| Persian posts | `src/content/blog/fa/*.md` |
+| English posts | `src/content/blog/en/*.md` |
+| About pages | `src/content/pages/{fa,en}/about.md` |
+| Site name, author & socials | `src/config.ts` |
+| Language labels / nav | `src/i18n/ui.ts` |
+| Homepage | `src/pages/[...lang]/index.astro` |
 | Post page layout | `src/layouts/BlogPost.astro` |
-| Global styles & colors | `src/styles/global.css` |
-| Astro config (site URL, fonts) | `astro.config.mjs` |
+| Theme colors & Tailwind entry | `src/styles/global.css` |
+| Astro config (site URL, i18n) | `astro.config.mjs` |
+| Cloudflare deploy config | `wrangler.toml` |
 
 ## Tips
 
-- **Edit → save → refresh.** The dev server reloads automatically for most changes.
-- **Commit often.** This is a Git repo — commit your posts so you never lose work.
-- **Set `site` in `astro.config.mjs`** to your real domain before deploying (it powers the RSS feed and sitemap).
-- If something breaks, run `npm run build` — the error messages point at the problem and the file to fix.
+- **Edit → save → refresh.** The dev server reloads automatically for most
+  changes.
+- **Commit often.** This is a Git repo — commit your posts so you never lose
+  work.
+- **Set `site` in `astro.config.mjs`** to your real domain before deploying
+  (it powers the RSS feed and canonical URLs).
+- If something breaks, run `npm run build` — the error messages point at the
+  problem and the file to fix.

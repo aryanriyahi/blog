@@ -1,0 +1,17 @@
+# Cloudflare Pages configuration for this Astro static site.
+#
+# NOTE: If you deploy through the Cloudflare dashboard (Workers & Pages →
+# Create → Connect to Git), this file is optional — the dashboard fills in
+# the same settings. It's mainly used for `wrangler pages` CLI deploys.
+
+# The name of your Pages project (shown in the dashboard URL as
+# https://<name>.pages.dev)
+name = "aryan-blog"
+
+# A pinned compatibility date for the Workers runtime (only relevant if
+# you later add Pages Functions / server-side handlers).
+compatibility_date = "2025-01-01"
+
+# Where `wrangler pages deploy` uploads from — matches Astro's build output.
+# Requires `npm run build` to have been run first.
+pages_build_output_dir = "dist"

@@ -11,7 +11,7 @@ In `astro.config.mjs`, set `site` to your Netlify URL or custom domain:
 ```js
 export default defineConfig({
     site: 'https://your-blog.netlify.app',
-    integrations: [mdx(), sitemap()],
+    integrations: [mdx(), icon()],
     // …
 });
 ```
@@ -52,7 +52,7 @@ Netlify builds in ~30–60 seconds and gives you a live URL like
 3. Add them, then click **Verify DNS access**. Netlify provisions the HTTPS
    certificate automatically.
 4. Update `site` in `astro.config.mjs` to your custom domain and push, so the
-   RSS feed/sitemap use the right URLs. Netlify redeploys automatically.
+   RSS feed/canonical URLs use the right URLs. Netlify redeploys automatically.
 
 ## (Alternative) Deploy with a config file
 

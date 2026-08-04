@@ -12,13 +12,27 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
 .env.production
+.env.*
+!.env.example
+
+# wrangler (Cloudflare) local state
+.wrangler/
+.wrangler.tmp/
+.wrangler.authenticate.json
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# local / personal files
+*.local
 
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
+# editor folders
+.vscode/
 .idea/
+

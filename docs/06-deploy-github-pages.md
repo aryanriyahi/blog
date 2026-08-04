@@ -24,7 +24,7 @@ Open `astro.config.mjs`. You need two settings:
 export default defineConfig({
     site: 'https://yourname.github.io',
     // no base needed — served from root
-    integrations: [mdx(), sitemap()],
+    integrations: [mdx(), icon()],
     // …fonts…
 });
 ```
@@ -35,7 +35,7 @@ export default defineConfig({
 export default defineConfig({
     site: 'https://yourname.github.io',
     base: '/blog/',
-    integrations: [mdx(), sitemap()],
+    integrations: [mdx(), icon()],
     // …fonts…
 });
 ```

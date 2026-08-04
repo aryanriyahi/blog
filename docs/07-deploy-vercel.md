@@ -7,12 +7,12 @@ domains.
 ## Step 1 — Set your site URL
 
 In `astro.config.mjs`, set `site` to the URL you'll use (your Vercel subdomain
-or a custom domain). This powers the RSS feed and sitemap:
+or a custom domain). This powers the RSS feed and canonical URLs:
 
 ```js
 export default defineConfig({
     site: 'https://your-blog.vercel.app',
-    integrations: [mdx(), sitemap()],
+    integrations: [mdx(), icon()],
     // …
 });
 ```
@@ -57,7 +57,7 @@ Vercel builds and deploys in ~30–60 seconds. When it's done you'll see a
 3. Vercel shows you the DNS records to add at your registrar (an `A` record or
    `CNAME`). Add them, then click "Verify".
 4. Update `site` in `astro.config.mjs` to your custom domain and push, so the
-   RSS feed/sitemap use the right URLs. Vercel redeploys automatically.
+   RSS feed/canonical URLs use the right URLs. Vercel redeploys automatically.
 
 ## Updating your site later
 

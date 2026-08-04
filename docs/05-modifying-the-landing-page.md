@@ -1,131 +1,99 @@
 # 5. Modifying the landing page
 
 This covers the pages visitors see first: the homepage, the About page, the
-header/footer, and the global site name/description.
+header/footer, and the global site name/author/socials.
 
-## Site name & description — `src/consts.ts`
+## Site name, author & socials — `src/config.ts`
 
 This is the most important file to personalize. It's imported across the site:
 
 ```ts
-export const SITE_TITLE = "Aryan's Blog";
-export const SITE_DESCRIPTION =
-    'A software engineer writing about the things I build and learn.';
+export const SITE_CONFIG = {
+  title: 'Aryan',
+  description: 'Worth sharing.',
+  url: 'https://your-domain.com',
+};
+
+export const AUTHOR = {
+  name: 'Aryan',
+  role: { fa: 'نویسنده | توسعه‌دهنده', en: 'Writer | Developer' },
+  bio:  { fa: '…', en: '…' },
+};
+
+export const SOCIALS = [
+  { label: 'GitHub', href: 'https://github.com/aryanriyahi', icon: 'mdi:github' },
+];
 ```
 
-- `SITE_TITLE` — shown in the browser tab, the header, the RSS feed, and the
-  sitemap.
-- `SITE_DESCRIPTION` — the homepage's meta description (for search engines and
-  social previews).
+- `SITE_CONFIG.title` — shown in the header logo and the browser tab.
+- `SITE_CONFIG.url` — powers canonical URLs / RSS; set it to your real domain
+  before deploying.
+- `AUTHOR.name`, `.role`, `.bio` — both a Persian (`fa`) and English (`en`)
+  string, used by the homepage profile sidebar.
+- `SOCIALS` — icons rendered in the profile sidebar; pick from the
+  [MDI set](https://icon-sets.iconify.design/mdi/).
 
-Replace "Aryan" with whatever name/handle you want to display.
+## Language labels & nav — `src/i18n/ui.ts`
 
-## Homepage — `src/pages/index.astro`
-
-The homepage shows a short intro and a list of your 5 most recent posts.
-
-### Change the intro text
-
-Edit the `<h1>` and `<p>` inside `<main>` (around lines 23–28):
-
-```astro
-<h1>Hi, I'm Aryan 👋</h1>
-<p>
-    I'm a software engineer. This is where I write about the things I build
-    and the things I learn. Here are my most recent posts — the full
-    <a href="/blog">archive</a> has everything.
-</p>
-```
-
-Rewrite this however you like — add links to your projects, social profiles,
-etc.
-
-### Change how many posts show
-
-The list is built in the frontmatter (around lines 9–12):
+The menu labels are per-language here. Edit the strings, or add another locale:
 
 ```ts
-const posts = (await getCollection('blog'))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 5);   // ← change this number
+export const languages = { fa: 'فارسی', en: 'English' };
+export const defaultLang = 'fa';
+
+export const ui = {
+  fa: { 'nav.home': 'خانه', 'nav.archive': 'بایگانی', 'nav.tags': 'برچسب‌ها', 'nav.about': 'درباره', … },
+  en: { 'nav.home': 'Home', 'nav.archive': 'Archive', 'nav.tags': 'Tags', 'nav.about': 'About', … },
+};
 ```
 
-Change `.slice(0, 5)` to `.slice(0, 10)` to show ten, or remove the
-`.slice(0, 5)` entirely to show **all** posts on the homepage.
+The header nav is defined in `src/components/Header.astro` and pulls its text
+from these labels with `t('nav.home')` etc.
 
-### Restyle the post list
+## Homepage — `src/pages/[...lang]/index.astro`
 
-The list styling is in the `<style>` block at the bottom of the file
-(`.post-list`, `.post-list li`, `.post-list time`). Tweak paddings, borders,
-or colors there.
+The homepage has a two-column layout on desktop: a **sticky profile sidebar**
+(author card) on the left and the **recent posts** list on the right.
 
-## About page — `src/pages/about.astro`
+- **Profile card** is rendered by `src/components/Profile.astro` (avatar, bio,
+  socials) using `AUTHOR` / `SOCIALS` from `config.ts`.
+- **Recent posts** come from the `blog` collection for the current language,
+  newest first. Remove or change the `max-h-[380px]` clip + “All posts →”
+  fade/more-link to show all posts instead.
+- The layout and post-list styling are Tailwind utility classes in the file's
+  template (there's no `<style>` block).
 
-A simple standalone page. Edit the `<h1>` and `<p>` content. Don't forget to
-update the email:
+To change how many posts show or the fallback archive label, edit the
+frontmatter (the `posts` array and `archiveLabel` const).
 
-```astro
-<p>
-    You can reach me at <a href="mailto:you@example.com">you@example.com</a>.
-</p>
-```
+## About page — `src/content/pages/{fa,en}/about.md`
 
-You could also write the About page **as a Markdown post** if you prefer — but a
-dedicated `.astro` page keeps it out of the blog archive and RSS feed, which is
-usually what you want.
+Unlike the starter, the About page is **Markdown content**, not an `.astro`
+file. Edit: `src/content/pages/fa/about.md` (Persian) and
+`src/content/pages/en/about.md` (English). Each renders via
+`src/pages/[...lang]/about.astro` with the `prose` class, so it styles like a
+post. Frontmatter: `title` and `description`.
 
-## Header (nav) — `src/components/Header.astro`
+## Header / Footer
 
-The header shows the site title (linked to `/`) and nav links. To rename or
-reorder links, edit the `.internal-links` block:
+- **Header** — `src/components/Header.astro`: the logo (from `SITE_CONFIG.title`)
+  and nav links. It also holds the theme toggle and language switcher.
+- **Footer** — `src/components/Footer.astro`: copyright with `AUTHOR.name` and
+  a per-language tagline. Edit the tagline strings in this file.
 
-```astro
-<div class="internal-links">
-    <HeaderLink href="/">Home</HeaderLink>
-    <HeaderLink href="/blog">Blog</HeaderLink>
-    <HeaderLink href="/about">About</HeaderLink>
-</div>
-```
+## The blog archive & tags — `src/pages/[...lang]/`
 
-To add a social link (GitHub, Twitter/X, etc.), add an external `<HeaderLink>`:
+- **Archive** — `.../archive.astro`: all posts grouped by year, per language.
+- **Tags index** — `.../tags/index.astro`: a grid of tags with post counts.
+- **Per-tag pages** — `.../tags/[tag].astro`: posts for one tag.
 
-```astro
-<HeaderLink href="https://github.com/yourname" target="_blank" rel="noopener">GitHub</HeaderLink>
-```
-
-## Footer — `src/components/Footer.astro`
-
-Currently:
-
-```astro
-<footer>
-    &copy; {today.getFullYear()} Aryan. All rights reserved.
-</footer>
-```
-
-Change "Aryan" to your name, or add links:
-
-```astro
-<footer>
-    &copy; {today.getFullYear()} Aryan.
-    <a href="/rss.xml">RSS</a> ·
-    <a href="https://github.com/yourname">GitHub</a>
-</footer>
-```
-
-## The blog archive — `src/pages/blog/index.astro`
-
-This page lists **all** posts as a grid with cover images. You usually don't
-need to edit it. If you want a simpler text-only list (matching the homepage
-style), you can replace its `<section>` with the same `.post-list` markup used
-on the homepage.
+These are auto-generated from your posts; you rarely need to edit them.
 
 ## SEO defaults — `src/components/BaseHead.astro`
 
 Every page passes a `title` and `description` into `<BaseHead>`, which outputs
-the `<title>`, meta description, Open Graph, and Twitter card tags. You rarely
-edit this file. If you want a custom default social-share image, see the
-`image` prop in `BaseHead.astro`.
+`<title>`, meta description, Open Graph, and Twitter-card tags, plus the RSS
+feed links and the **no-flicker theme script**. You rarely edit this file.
 
 ---
 
@@ -134,3 +102,4 @@ Once your homepage and About page feel right, you're ready to deploy. Pick one:
 - [Deploy to GitHub Pages →](./06-deploy-github-pages.md) (free, lives in your GitHub repo)
 - [Deploy to Vercel →](./07-deploy-vercel.md)
 - [Deploy to Netlify →](./08-deploy-netlify.md)
+- [Deploy to Cloudflare Pages →](./09-deploy-cloudflare.md) (recommended)

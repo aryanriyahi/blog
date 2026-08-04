@@ -1,292 +1,254 @@
-# 🪐 Zahit — Minimalist & Raw Astro v6 Portfolio Blog Theme
+# Aryan's Blog
 
-<div align="center">
-  <img src="public/zahit.png" alt="Zahit Theme Logo" width="100" style="margin-bottom: 15px;" />
-  <p><em>"Simplicity is depth, not lack."</em></p>
+A minimalist, fast, bilingual (Persian / English) blog built with **Astro**
+and **Tailwind CSS v4**, adapted from the **Zahit** theme. Persian (Farsi) is
+the default language with full **RTL** support; English is available under
+`/en/`.
 
-  [![Astro Version](https://img.shields.io/badge/Astro-v6.3%2B-ff5d01.svg?style=flat-square&logo=astro)](https://astro.build)
-  [![MDX Integration](https://img.shields.io/badge/MDX-v5.0%2B-fcb32c.svg?style=flat-square&logo=mdx)](https://mdxjs.com)
-  [![Language Support](https://img.shields.io/badge/i18n-Turkish%20%7C%20English-0855b1.svg?style=flat-square)](https://github.com/kuscadev/Zahit)
-  [![Live Demo](https://img.shields.io/badge/Demo-astro--zahit.netlify.app-0855b1?style=flat-square&logo=netlify)](https://astro-zahit.netlify.app)
-  [![Node Compatibility](https://img.shields.io/badge/Node-%3E%3D22.12.0-339933.svg?style=flat-square&logo=node.js)](https://nodejs.org)
-  [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
-</div>
-
----
-
-
-
-**Zahit** is a raw, flat minimalist **Astro v6** portfolio & blog theme built on the philosophy that simplicity is depth. Stripping away unnecessary widgets, heavy frameworks, and digital clutter, Zahit closes the gap between the writer and the reader, presenting a clean, content-first canvas optimized for developers, system administrators, and thinkers.
-
-The theme features a cohesive, premium dark design system using a deep space blue background (`#00022b`), highlighted by vibrant ice-blue accents (`#4fa5d8`) and optimized ice-blue tinted text (`#daeaff`) for exceptional high-contrast reading comfort.
-
-🔗 **Live Demo:** [https://astro-zahit.netlify.app](https://astro-zahit.netlify.app)
+- 🌐 Default **Persian (fa)** at `/`, **English (en)** at `/en/`
+- 🌗 Dark / light theme toggle (persisted, no flash-of-wrong-theme)
+- ↔️ Fully **RTL**-aware layout with logical CSS properties
+- ✍️ MDX + Markdown, Shiki syntax highlighting (dual dark/light themes)
+- 📖 Auto table of contents (scroll-spy), yearly archive, and tag pages
+- ⚡ Zero client-side JS by default — most pages are static HTML
 
 ---
 
-## 🚀 Core Features
+## ✨ Features
 
-Despite its ultra-minimalist appearance, Zahit is packed with highly refined, modern engineering features:
-
-### 🌐 1. Advanced i18n & Smart Translation Mapping
-* **Bilingual Routing:** Built-in internationalization (i18n) support for Turkish (`tr` as default) and English (`en` as secondary). Using Astro's localized routing rules with `prefixDefaultLocale: false` means Turkish resides at the root `/` path, and English pages are served under `/en/`.
-* **Smart Post Redirects:** The language switcher in [`Header.astro`](src/components/Header.astro) is dynamically mapped. If you are reading a localized blog post and click the language switcher, it looks up the corresponding translated post in the other language using a shared `translationKey` frontmatter value (e.g., `/tr/blog/kodun-estetigi/` redirects straight to `/en/blog/aesthetics-of-code/`). If no translation exists, it gracefully redirects to the target language's `/archive/` page.
-
-### 📅 2. Dynamic Year-Grouped Archive
-* **Year-Based Grouping:** Posts on the [`archive.astro`](src/pages/%5Blang%5D/archive.astro) page are dynamically grouped by their publication year (`2026`, `2025`, etc.) on compile time.
-* **Fluid Hover Interactions:** Features smooth minimalist transitions where links slide slightly to the right (`translateX`) on hover for an interactive, modern look.
-
-### 📑 3. ScrollSpy-Enabled Dynamic Table of Contents (ToC)
-* **Heading Scanner:** The [`BlogPost.astro`](src/layouts/BlogPost.astro) layout dynamically parses `h2` and `h3` heading elements inside your MDX file.
-* **Active State Tracker:** A native, lightweight scroll-event listener tracks the reader's viewport scrolling location, dynamically applying an `.active` class to the current section inside the sticky Table of Contents sidebar.
-
-### 📋 4. One-Click Code Clipboard Copier
-* **Hover Copy Button:** A copy button seamlessly overlays code blocks (`pre`) on hover.
-* **Visual Confirmation:** Tapping the copy button instantly copies the code block to the user's clipboard and switches icons to an animated confirmation checkmark with a transient highlight, resetting back after 2 seconds.
-
-### 📱 5. Responsive Profile Sidebar
-* **Sticky Layout:** The profile panel floats as a sticky sidebar on large desktop monitors, keeping author details and social links readily available.
-* **Mobile-Optimized Layout:** Under `860px` screen widths, the author's avatar is automatically hidden via CSS media queries (`@media (max-width: 859px) { .avatar { display: none; } }`) to conserve vertical space and eliminate mobile distractions.
-
-### ⚡ 6. Locale-Aware 404 Page
-* **Path Detection:** The universal [`404.astro`](src/pages/404.astro) page extracts the current language context from the URL path. It then renders localized error messages and provides contextual Turkish or English buttons directing users back to `/home` or `/archive`.
+- **i18n with smart translation mapping** — posts in `fa/` and `en/` are
+  linked with a shared `translationKey`; the header language switcher jumps
+  straight to the translated post (or the target language's archive).
+- **Dark / light theme** — a sun/moon toggle switches `data-theme` on
+  `<html>`, driven by CSS custom properties. Light/dark choice is saved in
+  `localStorage` and system preference is followed until you choose.
+- **Self-hosted variable fonts** — Source Sans 3 (Latin) + Vazirmatn
+  (Persian/Arabic) served locally, with `unicode-range` so each script uses
+  the right font automatically.
+- **Scroll-spy Table of Contents** — the blog post layout scans `h2`/`h3`
+  headings and highlights the active section in a sticky sidebar.
+- **Year-grouped archive** — posts are grouped by publication year.
+- **Tag pages** — auto-generated `/tags` with a post-count grid.
+- **One-click code copy** — a hover button over every code block.
+- **Back-to-top button** — appears after you scroll.
+- **Locale-aware 404 page** — localized error page with contextual actions.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech stack
 
-* **Astro v6.3+** — Modern, component-based static site generator with zero client-side JS by default.
-* **MDX Integration** — Markdown extension that allows importing interactive components and structures inside posts.
-* **Astro-Icon** — Highly optimized SVG icon wrapper supporting Iconify icon packs.
-* **Pure CSS Design System** — Built purely on top of local CSS variables (`global.css`) without bloated utility frameworks.
-
----
-
-## 📁 Repository Structure
-
-```text
-Zahit/
-├── public/                     # Static assets (favicons, profile graphics)
-│   ├── favicon.svg             # The vector logo used across the site
-│   └── profile.jpeg            # Desktop sidebar avatar picture
-├── src/
-│   ├── components/             # Reusable Astro UI components
-│   │   ├── BaseHead.astro      # Site meta tags, SEO setup, and font loaders
-│   │   ├── Footer.astro        # Minimal footer links
-│   │   ├── Header.astro        # Header layout, logo, and smart i18n switcher
-│   │   └── Profile.astro       # Author info and social link matrix
-│   ├── layouts/                # Page shell layouts
-│   │   ├── BaseLayout.astro    # Core HTML viewport shell
-│   │   └── BlogPost.astro      # Blog layout with ToC, ScrollSpy, and Clipboard Copy
-│   ├── i18n/                   # Translation configuration
-│   │   ├── ui.ts               # Localized translation dictionary keys
-│   │   └── utils.ts            # Translation route parsers and slug resolvers
-│   ├── pages/                  # Page routes (File-based Routing)
-│   │   ├── [lang]/             # Localized routes (Home, Archive)
-│   │   │   ├── blog/
-│   │   │   │   └── [...slug].astro  # Dynamic blog posts resolver
-│   │   │   ├── archive.astro
-│   │   │   └── index.astro
-│   │   ├── en/
-│   │   │   └── about.astro     # English "About Me" page
-│   │   ├── tr/
-│   │   │   └── about.astro     # Turkish "Hakkımda" page
-│   │   ├── 404.astro           # Universal i18n-aware 404 page
-│   │   └── index.astro         # Root entry route (Redirects to /tr/)
-│   ├── styles/                 # Styling architecture
-│   │   └── global.css          # Color scheme tokens, resets, & typography
-│   ├── content/                # Content directories
-│   │   └── blog/
-│   │       ├── en/             # English posts (.mdx / .md)
-│   │       └── tr/             # Turkish posts (.mdx / .md)
-│   ├── content.config.ts       # Astro collections schema schema definitions
-│   └── config.ts               # Core site variables, bio, and social listings
-├── astro.config.mjs            # Astro configuration with MDX and i18n routing
-├── package.json                # Project dependencies and operational scripts
-└── tsconfig.json               # TypeScript definitions
-```
+- [Astro](https://astro.build) v7 — content-focused static site generator
+- [Tailwind CSS](https://tailwindcss.com) v4 — utility-first styling
+  (`@tailwindcss/vite` + `@tailwindcss/typography`)
+- MDX — import components & interactive structures in posts
+- `astro-icon` — optimized SVG icons (Iconify MDI set)
+- Shiki — code syntax highlighting with dark/light themes
+- `@astrojs/rss` — RSS feeds for each locale
 
 ---
 
-## ⚡ Getting Started
+## 🚀 Quick start
 
-Run Zahit locally in just a few steps. Make sure you have **Node.js >= 22.12.0** installed on your system.
+Requires **Node.js ≥ 22.12.0**.
 
-**1. Clone the repository:**
-```bash
-git clone https://github.com/kuscadev/Zahit.git
-cd Zahit
-```
-
-**2. Install dependencies:**
 ```bash
 npm install
+npm run dev        # http://localhost:4321
 ```
 
-**3. Run the local development server:**
-```bash
-npm run dev
-```
-Open [http://localhost:4321](http://localhost:4321) in your browser to preview your site.
+Build and preview:
 
-**4. Build for production:**
 ```bash
-npm run build
-```
-The optimized static build outputs to the `./dist/` directory, ready to be deployed to Netlify, Vercel, or GitHub Pages.
-
-**5. Preview your build locally:**
-```bash
+npm run build      # → dist/
 npm run preview
+npx astro check    # type-check .astro files
 ```
 
 ---
 
-## ⚙️ Configuration & Customization Guide
+## 📁 Project structure
 
-Make Zahit your own by customizing these key configuration scopes:
+```text
+.
+├── astro.config.mjs        # Astro config (site URL, integrations, i18n, shiki)
+├── package.json            # deps + npm scripts
+├── wrangler.toml           # Cloudflare Pages deploy config (optional)
+├── public/                 # static assets copied as-is (fonts, icons)
+│   └── fonts/              # self-hosted Source Sans 3 + Vazirmatn
+└── src/
+    ├── config.ts           # 👤 site title, author bio, social links
+    ├── content.config.ts   # content-collection schemas (blog + pages)
+    ├── components/         # Header, Footer, Profile, BaseHead
+    ├── layouts/            # BaseLayout, BlogPost (with ToC / scroll-spy)
+    ├── i18n/               # ui.ts (labels) + utils.ts (route helpers)
+    ├── pages/              # file-based routes
+    │   └── [...lang]/     # localized routes (home, archive, tags, about, blog)
+    ├── styles/
+    │   └── global.css      # 🌗 theme tokens + Tailwind v4 entry
+    └── content/
+        ├── blog/           # ✍️ posts: fa/ and en/ sub-folders
+        │   ├── fa/         #   Persian posts (default)
+        │   └── en/         #   English posts
+        └── pages/          # about page: fa/ and en/
+```
 
-### 👤 1. Set Your Bio & Socials: `src/config.ts`
+---
 
-Personalize the site metadata, biography, avatar, and social links in [`src/config.ts`](src/config.ts):
+## ⚙️ Configuration
 
-```typescript
+### Site identity — `src/config.ts`
+
+Set the site title, author bio, avatar, and social links here:
+
+```ts
 export const SITE_CONFIG = {
-  title: 'Zahit',
-  description: 'A raw, flat minimalist theme built on the philosophy that simplicity is depth.',
-  url: 'https://zahit.dev',
+  title: 'Aryan',
+  description: 'Worth sharing.',
+  url: 'https://your-domain.com',   // ← update before deploying
 };
 
 export const AUTHOR = {
-  name: 'John Doe',
-  role: {
-    tr: 'Yazar | Geliştirici | Düşünür',
-    en: 'Writer | Developer | Thinker',
-  },
-  bio: {
-    tr: 'Teknik konuları sade bir dille anlatan bağımsız bir yazarım. Projelerimi ve düşüncelerimi burada paylaşıyorum.',
-    en: 'An independent writer who explains technical topics in plain language. I share my projects and thoughts here.',
-  },
-  avatar: '/profile.jpg', // Place your avatar in the /src/assets folder
+  name: 'Aryan',
+  role: { fa: 'نویسنده | توسعه‌دهنده', en: 'Writer | Developer' },
+  bio:  { fa: '…', en: '…' },
 };
 
 export const SOCIALS = [
-  { label: 'Mail', href: 'mailto:johndoe@example.com', icon: 'mdi:email' },
-  { label: 'GitHub', href: 'https://github.com/johndoe', icon: 'mdi:github' },
-  // Add additional channels by mimicking this schema
+  { label: 'GitHub', href: 'https://github.com/aryanriyahi', icon: 'mdi:github' },
 ];
 ```
 
-*Note: Icons are imported via the [Iconify Material Design Icons (MDI)](https://icon-sets.iconify.design/mdi/) set.*
+Icons come from the [Iconify MDI set](https://icon-sets.iconify.design/mdi/).
 
----
+### Site URL — `astro.config.mjs`
 
-### ✍️ 2. Writing Linked Bilingual Blog Posts
+Set `site` to your real domain; it powers the RSS feed and canonical URLs:
 
-To leverage Zahit's bilingual matching feature, place the post files in the respective locale directories and bind them together with a matching `translationKey`:
-
-1. **Add your files under the content directory:**
-   * Turkish draft: `src/content/blog/tr/sadelik.mdx`
-   * English draft: `src/content/blog/en/simplicity.mdx`
-
-2. **Specify matching `translationKey` parameters in both frontmatters:**
-   Provide the exact same key in both files so the smart language switcher in the header knows they are translated versions of each other.
-
-#### Turkish Post Frontmatter Example (`src/content/blog/tr/sadelik.mdx`):
-```markdown
----
-title: 'Sadelik, Eksiklik Değil Derinliktir'
-description: 'Minimalizmin anlamı ve Zahit temasının temel felsefesi.'
-pubDate: '2026-05-16'
-tags: ['minimalizm', 'tasarim', 'felsefe']
-translationKey: 'simplicity-post' # MUST match the English post key exactly
----
-
-Türkçe içeriğinizi buraya yazın...
+```js
+export default defineConfig({
+  site: 'https://your-domain.com',
+  // …
+});
 ```
 
-#### English Post Frontmatter Example (`src/content/blog/en/simplicity.mdx`):
-```markdown
----
-title: 'Simplicity is Depth, Not Lack'
-description: 'Discover the meaning of minimalism, the core philosophy of the Zahit theme.'
-pubDate: '2026-05-16'
-tags: ['minimalism', 'design', 'philosophy']
-translationKey: 'simplicity-post' # MUST match the Turkish post key exactly
----
+### Language labels — `src/i18n/ui.ts`
 
-Write your English content here...
+Edit nav/menu strings or add locales:
+
+```ts
+export const languages = { fa: 'فارسی', en: 'English' };
+export const defaultLang = 'fa';
+
+export const ui = {
+  fa: { 'nav.home': 'خانه', 'nav.archive': 'بایگانی', … },
+  en: { 'nav.home': 'Home', 'nav.archive': 'Archive', … },
+};
 ```
 
----
+### Theme colors — `src/styles/global.css`
 
-### 🎨 3. Customize Colors & Themes: `src/styles/global.css`
-
-Zahit is entirely customized using CSS variables. Change the theme colors, typography, or grid width in [`src/styles/global.css`](src/styles/global.css):
+Color tokens are CSS custom properties toggled by `data-theme` and bridged
+into Tailwind via `@theme inline`:
 
 ```css
-:root {
-  /* Color Palette Variables */
-  --bg-color: #00022b;     /* Deep Space Blue Background */
-  --dark: #010e54;         /* Section dark accenting blocks */
-  --accent: #0855b1;       /* Primary accent color (Links, borders) */
-  --light: #4fa5d8;        /* Brighter accent blue for hovering states */
-  --text-color: #daeaff;   /* Soft ice-blue text tint for superior reading readability */
+:root, :root[data-theme="dark"]  { --bg-color: #161a28; --accent: #4a90e2; … }
+:root[data-theme="light"]       { --bg-color: #f7f8fb; --accent: #1d4ed8; … }
 
-  /* Typography Variables */
-  --font-family-body: 'Source Sans 3', sans-serif;
-  --font-family-heading: 'Source Sans 3', sans-serif;
-
-  /* Global Widths */
-  --site-width: 80%;       /* Global responsive container width */
-  --content-padding: 2rem;
-  
-  /* Transition timings */
-  --transition-speed: 0.2s;
+@theme inline {
+  --color-bg: var(--bg-color);   /* → bg-bg, text-bg, … */
+  --color-accent: var(--accent); /* → bg-accent, text-accent, … */
 }
 ```
 
+Edit the hex values to reskin the whole site (utilities and prose follow
+automatically).
+
 ---
 
-### 🗣️ 4. Edit Menu Labels: `src/i18n/ui.ts`
+## ✍️ Writing a post
 
-Customize translation dictionary labels or add extra languages in [`src/i18n/ui.ts`](src/i18n/ui.ts):
+Posts live in `src/content/blog/<lang>/`. To write a bilingual post, create
+one file in each language and link them with the **same** `translationKey`:
 
-```typescript
-export const languages = {
-  tr: 'Türkçe',
-  en: 'English',
-};
+`src/content/blog/fa/my-post.md` (frontmatter):
 
-export const defaultLang = 'tr';
-
-export const ui = {
-  tr: {
-    'nav.home': 'Ana Sayfa',
-    'nav.about': 'Hakkında',
-    'nav.archive': 'Arşiv',
-    'toc.title': 'İçindekiler',
-    // ...other TR definitions
-  },
-  en: {
-    'nav.home': 'Home',
-    'nav.about': 'About',
-    'nav.archive': 'Archive',
-    'toc.title': 'Contents',
-    // ...other EN definitions
-  },
-} as const;
+```yaml
+---
+title: 'عنوان نوشته'
+description: 'توضیح کوتاه'
+pubDate: '2026-08-04'
+tags: ['astro', 'writing']
+translationKey: 'my-post'   # must match the English file exactly
+---
 ```
 
+`src/content/blog/en/my-post.md` (frontmatter):
+
+```yaml
+---
+title: 'My post'
+description: 'Short summary'
+pubDate: '2026-08-04'
+tags: ['astro', 'writing']
+translationKey: 'my-post'   # must match the Persian file exactly
+---
+```
+
+The header language switcher uses `translationKey` to link between versions.
+Required frontmatter: `title`, `description`, `pubDate`. `tags` are optional
+but enable the tag pages.
+
 ---
 
-## 📜 License
+## 🚢 Deployment
 
-This project is open-source and licensed under the [MIT License](LICENSE).
+This is a fully static site — deploy the `dist/` output anywhere. Recommended:
+
+| Host | Guide |
+|------|-------|
+| **Cloudflare Pages** | [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md) |
+| Netlify | [`docs/08-deploy-netlify.md`](docs/08-deploy-netlify.md) |
+| Vercel | [`docs/07-deploy-vercel.md`](docs/07-deploy-vercel.md) |
+| GitHub Pages | [`docs/06-deploy-github-pages.md`](docs/06-deploy-github-pages.md) |
+
+All hosts: build command `npm run build`, publish directory `dist`, Node 22.
+Before deploying, set `site` in `astro.config.mjs` to your real domain so the
+RSS feed and canonical URLs are correct.
+
+### Cloudflare Pages (quickest)
+
+1. In the Cloudflare dashboard → **Workers & Pages → Create → Pages**.
+2. **Connect to Git**, pick this repo, set **Build command** `npm run build`
+   and **Build output directory** `dist`.
+3. Deploy. You get a free `https://<project>.pages.dev` URL with HTTPS.
+
+Full step-by-step (Git integration + `wrangler` CLI + custom domains):
+see [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
 
 ---
 
-<div align="center">
-  <p><em>Minimal. Practical. Worth Sharing.</em></p>
-  <p>Developed with passion by <strong><a href="https://github.com/kuscadev">kuscadev</a></strong></p>
-</div>
+## 📚 Documentation
+
+The full beginner-friendly guide lives in [`docs/`](docs/README.md):
+project overview, running locally, writing posts, customizing layout and
+landing page, and deploying to GitHub Pages / Vercel / Netlify / Cloudflare.
+
+---
+
+## 🌿 Branches
+
+- `master` — the **vanilla CSS** version of the blog (no Tailwind).
+- `feat/tailwind-rewrite` — this **Tailwind v4** version (default working
+  branch). Merge into `master` once you're happy with it.
+
+---
+
+## 🤝 Credits & License
+
+This project adapts the **Zahit** theme by
+[kuscadev](https://github.com/kuscadev) ([LICENSE](LICENSE), MIT), extended
+with Persian/English i18n, RTL support, a dark/light theme toggle, and a
+Tailwind CSS v4 rewrite. Additional thanks to the Astro and Tailwind
+communities.
+
+Released under the [MIT License](LICENSE).

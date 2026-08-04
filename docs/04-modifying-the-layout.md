@@ -1,201 +1,144 @@
 # 4. Modifying the layout
 
-This guide covers the visual structure: the post page template, global styles,
-colors, fonts, and the reusable components.
+This guide covers the visual structure: the post page template, global
+styles/theme, fonts, and the reusable components. Styling is done with
+**Tailwind CSS v4** utility classes (applied directly in the `.astro`
+templates), plus a handful of CSS custom properties for theming.
 
-## The post page template — `src/layouts/BlogPost.astro`
+## The post page — `src/layouts/BlogPost.astro`
 
-This file controls how every blog post looks. It's an Astro component with two
-parts:
+This layout renders every blog post. It's an Astro component with two parts:
 
 - **Frontmatter (between `---`):** TypeScript that receives the post's data
-  (`title`, `description`, `pubDate`, `updatedDate`, `heroImage`) via
-  `Astro.props`.
-- **Template (after `---`):** the HTML. Your Markdown content is injected where
-  you see `<slot />`.
+  (`title`, `description`, `pubDate`, `updatedDate`, `tags`, `headings`) via
+  `Astro.props`, and builds a table of contents from the `h2`/`h3` headings.
+- **Template (after `---`):** the HTML. Your Markdown content is injected into
+  a `<div class="prose prose-lg max-w-none">` where you see `<slot />` — the
+  `prose` class is what styles rendered Markdown.
 
-The layout renders, in order: `<Header />`, the hero image (if any), the title
-+ date, an `<hr />`, then `<slot />` (your content), then `<Footer />`.
+The layout shows: a centered title + published/updated dates + tag pills,
+then the content, then a **sticky table of contents** sidebar on wide screens
+(hidden on mobile). It also wires up the scroll-spy and code-copy button
+scripts at the bottom.
 
 ### Common tweaks
 
-**Widen the reading column.** Posts are constrained to 720px. Find the
-`.prose` rule (around line 32) and change `width`:
+**Change the content column / prose styling.** Rendered Markdown is styled by
+Tailwind's typography plugin through the `.prose` rules in
+`src/styles/global.css` (colors via `--tw-prose-*` variables). Spacing, font
+sizes, and link behavior live there.
+
+**Hide the table of contents.** In `BlogPost.astro`, remove (or comment)
+`{tocHeadings.length > 0 && ( … )}` — or simply don't add `##` headings to a
+post, and the ToC won't render.
+
+**Change the date format.** Dates use
+`pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })`
+(and a locale-aware format for the archive/tags). Edit those calls in
+`BlogPost.astro`, `[...lang]/archive.astro`, and `[...lang]/tags/[tag].astro`.
+
+## Global styles & theme — `src/styles/global.css`
+
+`global.css` is the single entry file that imports Tailwind and defines the
+**theme tokens** — CSS custom properties that everything uses, toggled by
+`data-theme` on `<html>`:
 
 ```css
-.prose {
-    width: 820px;   /* was 720px */
-    max-width: calc(100% - 2em);
-    margin: auto;
-    padding: 1em;
-    color: rgb(var(--gray-dark));
+/* Dark (default) */
+:root, :root[data-theme="dark"] {
+    --bg-color: #161a28;
+    --accent:   #4a90e2;
+    --light:    #6bb0f5;
+    --text-color: #c5cee0;
+    --heading-color: #f0f4ff;
+    --code-bg:  #0d1117;
+    /* …borders, muted text, hover tints… */
+}
+
+/* Light */
+:root[data-theme="light"] {
+    --bg-color: #f7f8fb;
+    --accent:   #1d4ed8;
+    /* … */
 }
 ```
 
-**Remove the horizontal rule under the title.** Delete or comment out the line
-that says `<hr />` (around line 78).
-
-**Hide the hero image area entirely** (if you never use cover images): delete
-the `.hero-image` block (the lines with `{heroImage && ...}`).
-
-**Change the date format.** The date is rendered by
-`src/components/FormattedDate.astro`, which uses
-`date.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })`.
-Edit that file to change the format or locale (e.g. `'en-gb'`).
-
-## Global styles — `src/styles/global.css`
-
-This single file styles the whole site. It defines **CSS custom properties
-(variables)** in `:root` that everything else uses:
+These tokens are **bridged into Tailwind** so you can use e.g. `bg-bg`,
+`text-accent`, `border-border`, `text-muted`, `text-heading` anywhere:
 
 ```css
-:root {
-    --accent: #2337ff;          /* link color, active nav, blockquote border */
-    --accent-dark: #000d8a;
-    --black: 15, 18, 25;        /* headings color (R,G,B — used via rgb()) */
-    --gray: 96, 115, 159;       /* secondary text */
-    --gray-light: 229, 233, 240;/* light backgrounds, borders */
-    --gray-dark: 34, 41, 57;    /* body text color */
-    --gray-gradient: rgba(var(--gray-light), 50%), #fff;
-    --box-shadow: 0 2px 6px rgba(var(--gray), 25%), /* … */;
+@theme inline {
+    --color-bg: var(--bg-color);     /* → bg-bg  */
+    --color-accent: var(--accent);   /* → text-accent  */
+    --color-text: var(--text-color); /* → text-text    */
 }
 ```
 
-> Note the color variables come in two shapes: `--accent` is a normal hex
-> color, while `--black` / `--gray*` are **raw R,G,B triplets** used as
-> `rgb(var(--black))`. Keep that pattern when editing them.
+When you change a hex value in `:root`, **every Tailwind utility and the
+prose content update automatically** — in both light and dark mode.
 
-### Change the accent (link) color
+### Change the dark / light colors
 
-Edit `--accent` and `--accent-dark`:
+Edit the hex values in the `:root[data-theme="dark"]` and
+`:root[data-theme="light"]` blocks. Keep the same variable names.
 
-```css
---accent: #0a7d5b;       /* e.g. a green */
---accent-dark: #064f3a;
-```
+### Change the site width / content padding
 
-### Change the base font size / line height
+Edit `--site-width` and `--content-padding` in the shared `:root` block
+(used by the `w-[var(--site-width)]` classes on the header/main/footer).
 
-In the `body` rule:
+## Fonts — self-hosted in `public/fonts/`
 
-```css
-body {
-    font-size: 18px;   /* was 20px */
-    line-height: 1.6;  /* was 1.7 */
-}
-```
+The site ships two self-hosted variable fonts (no external requests):
 
-### Change the content width (non-post pages)
+- **Source Sans 3** (Latin) — `public/fonts/source-sans-3/`
+- **Vazirmatn** (Persian/Arabic) — `public/fonts/vazirmatn/`
 
-The `main` rule sets the column width for the homepage, About, and blog
-archive:
+They're declared with `@font-face` and a `unicode-range` in `global.css`, so
+Latin text uses Source Sans 3 and Persian text automatically uses Vazirmatn.
+The stacks live in `--font-family-body` / `--font-family-heading`.
 
-```css
-main {
-    width: 720px;          /* change me */
-    max-width: calc(100% - 2em);
-    margin: auto;
-    padding: 3em 1em;
-}
-```
-
-### Style code blocks
-
-Code blocks are styled with the `pre` / `code` rules near the bottom of
-`global.css`. Shiki outputs highlighted code as inline-styled spans, so the
-`pre` rule mostly controls padding + border radius. To add a dark background:
-
-```css
-pre {
-    padding: 1.5em;
-    border-radius: 8px;
-    background: #1e1e2e;      /* dark background */
-    overflow-x: auto;
-}
-```
-
-To switch the syntax-highlighting *theme*, see Astro's
-[Shiki config docs](https://docs.astro.build/en/guides/markdown-syntax-highlighting/).
-
-## Fonts — `astro.config.mjs`
-
-The site uses a local font ("Atkinson") bundled in `src/assets/fonts/`. It's
-configured in `astro.config.mjs` under `fonts` and exposed as the CSS variable
-`--font-atkinson` (used in `global.css`'s `body { font-family: var(--font-atkinson) }`).
-
-**To use a system font instead** (simplest, no files to manage), open
-`global.css` and change the body font-family:
-
-```css
-body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-}
-```
-
-You can leave the font config in `astro.config.mjs` — it just won't be used.
-
-**To use a Google Font**, see Astro's
-[Fonts guide](https://docs.astro.build/en/guides/fonts/). The easiest path is
-the `fontProviders.google()` provider in `astro.config.mjs`.
+To swap a font: replace the `.woff2` files (keeping the same names) and update
+its `@font-face` `family` + `url`. To add a Google Font, see Astro's
+[Fonts guide](https://docs.astro.build/en/guides/fonts/).
 
 ## Components — `src/components/`
 
 | File | Role | When you'd edit it |
 |------|------|--------------------|
-| `Header.astro` | Top nav (site name + Home/Blog/About) | Add/rename nav links |
-| `Footer.astro` | Bottom footer (copyright) | Change the name, add links |
-| `BaseHead.astro` | `<head>` contents: meta tags, favicon, RSS link | Edit SEO defaults |
-| `FormattedDate.astro` | Renders a `<time>` element | Change date format/locale |
-| `HeaderLink.astro` | A nav `<a>` with active-state styling | Rarely |
+| `Header.astro` | Top nav + language & theme switchers | Add/rename nav links, edit the logo |
+| `Footer.astro` | Footer line (copyright + tagline) | Change the name/tagline |
+| `Profile.astro` | Author card on the homepage sidebar | Edit avatar, socials, bio |
+| `BaseHead.astro` | `<head>`: meta tags, RSS links, no-flicker theme script | Edit SEO defaults |
+| `BaseLayout.astro` | The HTML shell (body, main, footer, back-to-top) | Change layout scaffolding |
 
 ### Add a new nav link
 
-In `src/components/Header.astro`, add another `<HeaderLink>` inside
-`.internal-links`:
+In `src/components/Header.astro`, inside the links row, add another `<a>` using
+`getRelativeLocaleUrl` so it works in both languages:
 
 ```astro
-<div class="internal-links">
-    <HeaderLink href="/">Home</HeaderLink>
-    <HeaderLink href="/blog">Blog</HeaderLink>
-    <HeaderLink href="/about">About</HeaderLink>
-    <HeaderLink href="https://github.com/yourname">GitHub</HeaderLink>
-</div>
+<a href={getRelativeLocaleUrl(lang, 'contact')} class="text-[0.95rem] font-medium text-light hover:text-heading">
+    {t('nav.contact')}
+</a>
 ```
 
-External links work too — `HeaderLink` just renders an `<a>`.
+(You'll also add a `'nav.contact'` string to both `fa` and `en` in
+`src/i18n/ui.ts`, and create the page under `src/pages/[...lang]/`.)
 
-## Add a brand-new page
+## Language & theme switchers
 
-Drop a `.astro` file in `src/pages/`. The filename becomes the URL:
+The header includes a **dark/light toggle** and a **language switcher**
+(`FA` / `EN`). Their behavior/scripts live in `Header.astro` and
+`BaseHead.astro`; the toggle works by setting `data-theme` on `<html>` and
+persisting to `localStorage`.
 
-- `src/pages/uses.astro` → `/uses`
-- `src/pages/projects/index.astro` → `/projects`
+## RTL (right-to-left) note
 
-Use this structure as a starting point (every page needs `<BaseHead>`,
-`<Header>`, `<Footer>`):
-
-```astro
----
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_TITLE } from '../consts';
----
-
-<!doctype html>
-<html lang="en">
-    <head>
-        <BaseHead title={`Page title — ${SITE_TITLE}`} description="..." />
-    </head>
-    <body>
-        <Header />
-        <main>
-            <h1>Page title</h1>
-            <p>Your content here.</p>
-        </main>
-        <Footer />
-    </body>
-</html>
-```
+Because the site supports Persian, layout classes use **logical** Tailwind
+utilities (`ps-*`, `pe-*`, `ms-*`, `me-*`, `text-start`, `border-s-*`) so
+everything mirrors automatically when `dir="rtl"` is set on `<html>` for
+Persian. When you write new markup, prefer logical utilities over physical
+ones (`left-*`/`right-*`/`text-left`) so RTL keeps working.
 
 Next: [Modifying the landing page →](./05-modifying-the-landing-page.md)

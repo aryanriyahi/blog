@@ -1,75 +1,92 @@
 # 1. Project overview
 
-This is an [Astro](https://astro.build) static-site blog. Astro takes your
-Markdown posts + page templates and builds plain HTML/CSS/JS that you can host
-anywhere for free. No database, no server, no backend to maintain.
+This is an [Astro](https://astro.build) static-site blog, bilingual with
+**Persian (fa)** as the default language and **English (en)** as secondary.
+Astro takes your Markdown posts + page templates and builds plain
+HTML/CSS/JS that you can host anywhere for free. No database, no server, no
+backend to maintain.
+
+The site is styled with **Tailwind CSS v4**. It supports **RTL** automatically
+for Persian and has a built-in **dark / light theme toggle**.
 
 ## Folder structure
 
 ```
 blog/
-├── astro.config.mjs       ← Astro config (site URL, integrations, fonts)
-├── package.json           ← dependencies + npm scripts
-├── tsconfig.json          ← TypeScript config
-├── public/                ← static files copied as-is (favicon, etc.)
+├── astro.config.mjs       ← Astro config (site URL, integrations, i18n, shiki)
+├── wrangler.toml          ← Cloudflare Pages deploy config (optional)
+├── public/                ← static files copied as-is (favicons, fonts)
 └── src/
-    ├── consts.ts          ← global data: site title & description
-    ├── content.config.ts  ← defines the "blog" collection + post frontmatter rules
+    ├── config.ts          ← global data: site title, author bio, socials
+    ├── content.config.ts  ← defines the "blog" + "pages" collections & frontmatter rules
     ├── content/
-    │   └── blog/          ← ✍️  YOUR POSTS LIVE HERE (one .md/.mdx file per post)
+    │   ├── blog/          ← ✍️  YOUR POSTS LIVE HERE
+    │   │   ├── fa/            (Persian posts — default language)
+    │   │   └── en/            (English posts)
+    │   └── pages/         ← standalone pages (e.g. About), per language
+    │       ├── fa/            (Persian about page)
+    │       └── en/            (English about page)
     ├── components/        ← reusable UI pieces
-    │   ├── Header.astro       (top nav bar)
+    │   ├── Header.astro       (top nav + language & theme switchers)
     │   ├── Footer.astro       (bottom footer)
-    │   ├── BaseHead.astro     (SEO <meta> tags, used by every page)
-    │   ├── FormattedDate.astro
-    │   └── HeaderLink.astro   (a nav link with active-state styling)
+    │   ├── Profile.astro      (author card for the homepage sidebar)
+    │   └── BaseHead.astro     (SEO <meta> tags + no-flicker theme script)
     ├── layouts/
-    │   └── BlogPost.astro ← the template each blog post is rendered with
+    │   ├── BaseLayout.astro   (the HTML shell every page uses)
+    │   └── BlogPost.astro     (post page: title, meta, tags, ToC, prose)
+    ├── i18n/              ← translation config & helpers
+    │   ├── ui.ts            (language labels / nav strings)
+    │   └── utils.ts         (route helpers: current lang, translations)
     ├── pages/             ← each file here becomes a URL/route
-    │   ├── index.astro        →  /            (homepage)
-    │   ├── about.astro        →  /about
-    │   └── blog/
-    │       ├── index.astro        →  /blog     (post archive)
-    │       └── [...slug].astro    →  /blog/<post>/  (one page per post)
-    ├── rss.xml.js         →  /rss.xml  (RSS feed)
+    │   ├── 404.astro         →  /404
+    │   └── [...lang]/        ← localized routes
+    │       ├── index.astro      →  / (fa) and /en/
+    │       ├── archive.astro    →  /archive and /en/archive
+    │       ├── about.astro      →  /about and /en/about
+    │       ├── tags/index.astro →  /tags and /en/tags
+    │       ├── tags/[tag].astro →  /tags/<tag> and /en/tags/<tag>
+    │       ├── blog/[...slug].astro → /blog/<post>/ and /en/blog/<post>/
+    │       └── rss.xml.ts       →  /rss.xml and /en/rss.xml
     └── styles/
-        └── global.css     ← site-wide styling + color/spacing variables
+        └── global.css      ← Tailwind v4 entry + theme color tokens
 ```
 
 ## How a Markdown file becomes a web page
 
-1. You write a post at `src/content/blog/my-post.md`.
+1. You write a post at `src/content/blog/fa/my-post.md` (or `en/`).
 2. Astro's **content collection** (`src/content.config.ts`) finds it, reads the
    frontmatter, and checks it against a schema — `title`, `description`, and
    `pubDate` are required.
-3. `src/pages/blog/[...slug].astro` is a **dynamic route**. It loops over every
-   post in the collection and generates one HTML page per post. The post's `id`
-   (its filename) becomes the URL: `/blog/my-post/`.
+3. `src/pages/[...lang]/blog/[...slug].astro` is a **dynamic route**. It loops
+   over every post in the collection and generates one HTML page per post. The
+   post's `id` (its filename + language) becomes the URL: `/blog/my-post/` in
+   Persian, `/en/blog/my-post/` in English.
 4. Each generated page uses the `src/layouts/BlogPost.astro` layout for the
-   header, title, date, and styling, then drops your Markdown content where it
-   says `<slot />`.
+   header, title, date, tags, table of contents, and styling, then drops your
+   Markdown content where it says `<slot />`.
 
 So the mapping is simply:
 
 ```
-src/content/blog/my-post.md   →   https://yoursite.com/blog/my-post/
-src/content/blog/hello.md     →   https://yoursite.com/blog/hello/
+src/content/blog/fa/my-post.md  →  https://yoursite.com/blog/my-post/
+src/content/blog/en/my-post.md  →  https://yoursite.com/en/blog/my-post/
 ```
 
-You never edit `[...slug].astro` to add a post — just drop a file in
+You never edit the slug route to add a post — just drop a file in
 `src/content/blog/` and a page is created automatically.
 
 ## What's already set up for you
 
-- ✅ Blog post pages (one URL per Markdown file)
-- ✅ Post archive at `/blog`
-- ✅ Homepage with recent posts
-- ✅ About page at `/about`
-- ✅ RSS feed at `/rss.xml`
-- ✅ Sitemap at `/sitemap-index.xml`
+- ✅ Bilingual routing (Persian default `/`, English under `/en/`)
+- ✅ Full **RTL** layout for Persian, **LTR** for English
+- ✅ Dark / light **theme toggle** (persisted, no flash on load)
+- ✅ Blog post pages (one URL per Markdown file, per language)
+- ✅ Year-grouped **archive**, **tags** index + per-tag pages
+- ✅ About page per language
+- ✅ RSS feeds per language
 - ✅ SEO meta tags (Open Graph, Twitter cards) on every page
 - ✅ Markdown **and** MDX support
-- ✅ Syntax-highlighted code blocks (Shiki)
+- ✅ Syntax-highlighted code blocks (Shiki, dark/light themes)
 - ✅ Responsive layout (works on mobile)
 
 Next: [Running locally →](./02-running-locally.md)
