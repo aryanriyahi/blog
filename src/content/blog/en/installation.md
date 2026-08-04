@@ -1,12 +1,12 @@
 ---
-title: 'Zahit Theme: Step-by-Step Installation Guide'
-description: 'Learn how to easily install, configure, and get started with the Zahit theme on your local machine.'
+title: 'Step-by-Step Installation Guide'
+description: 'Learn how to easily install, configure, and get started with this blog on your local machine.'
 pubDate: '2026-05-17'
-tags: ['zahit-guide', 'installation', 'astro']
-translationKey: 'zahit-installation'
+tags: ['guide', 'installation', 'astro']
+translationKey: 'installation'
 ---
 
-Welcome to the **Zahit** installation guide! Zahit is a raw, flat minimalist Astro v7 theme built on the philosophy that simplicity is depth. In this guide, we will walk you through the process of cloning the repository, installing the required dependencies, and starting the local development environment.
+Welcome to the installation guide for this blog! It's a raw, flat minimalist Astro v7 site built on the philosophy that simplicity is depth. In this guide, we will walk you through the process of cloning the repository, installing the required dependencies, and starting the local development environment.
 
 ## Prerequisites
 
@@ -22,23 +22,23 @@ Before we begin, make sure you have the following prerequisites installed on you
 
 ## Step 1: Clone the Repository
 
-To install Zahit, you first need to clone the repository to your local directory. Open your terminal and run the following command:
+To install the blog, you first need to clone the repository to your local directory. Open your terminal and run the following command:
 
 ```bash
-git clone https://github.com/kuscadev/Zahit.git
+git clone https://github.com/aryanriyahi/blog.git
 ```
 
 Once the cloning process is complete, navigate into the project directory:
 
 ```bash
-cd Zahit
+cd blog
 ```
 
 ---
 
 ## Step 2: Install Project Dependencies
 
-Zahit uses lightweight dependencies like `@astrojs/mdx` for content rendering and `astro-icon` for flat SVG styling. Run the following command in the root folder of the project to install all required packages:
+This blog uses lightweight dependencies like `@astrojs/mdx` for content rendering and `astro-icon` for flat SVG styling. Run the following command in the root folder of the project to install all required packages:
 
 ```bash
 npm install
@@ -68,6 +68,6 @@ Open your favorite web browser and navigate to `http://localhost:4321/` to view 
 
 ## Next Steps
 
-Now that your Zahit theme is successfully installed and running, you are ready to configure your profile details and write your first bilingual blog post. 
+Now that your blog is successfully installed and running, you are ready to configure your profile details and write your first bilingual blog post. 
 
-Proceed to our next guide: **[Zahit Theme: How to Write and Organize Content](/en/blog/usage/)** to learn more about the structure of content collections and dynamic i18n routing.
+Proceed to our next guide: **[How to Write and Organize Content](/en/blog/usage/)** to learn more about the structure of content collections and dynamic i18n routing.

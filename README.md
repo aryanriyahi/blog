@@ -1,9 +1,8 @@
 # Aryan's Blog
 
 A minimalist, fast, bilingual (Persian / English) blog built with **Astro**
-and **Tailwind CSS v4**, adapted from the **Zahit** theme. Persian (Farsi) is
-the default language with full **RTL** support; English is available under
-`/en/`.
+and **Tailwind CSS v4**. Persian (Farsi) is the default language with full
+**RTL** support; English is available under `/en/`.
 
 - 🌐 Default **Persian (fa)** at `/`, **English (en)** at `/en/`
 - 🌗 Dark / light theme toggle (persisted, no flash-of-wrong-theme)
@@ -243,12 +242,7 @@ landing page, and deploying to GitHub Pages / Vercel / Netlify / Cloudflare.
 
 ---
 
-## 🤝 Credits & License
+## 📄 License
 
-This project adapts the **Zahit** theme by
-[kuscadev](https://github.com/kuscadev) ([LICENSE](LICENSE), MIT), extended
-with Persian/English i18n, RTL support, a dark/light theme toggle, and a
-Tailwind CSS v4 rewrite. Additional thanks to the Astro and Tailwind
-communities.
-
-Released under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE). Built with
+[Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com).

@@ -1,12 +1,12 @@
 ---
-title: 'Zahit Theme: Advanced Customization & Colors'
+title: 'Advanced Customization & Colors'
 description: 'Step-by-step guide to modifying configuration variables, styling layout systems, and updating color themes.'
 pubDate: '2026-05-23'
-tags: ['zahit-guide', 'customization', 'css']
-translationKey: 'zahit-customization'
+tags: ['guide', 'customization', 'css']
+translationKey: 'customization'
 ---
 
-Welcome to the Zahit advanced customization guide! Since Zahit is designed under pure minimalist aesthetics, the codebase is kept raw, transparent, and extremely easy to tweak. In this tutorial, we will show you how to update your biographical profile card, tweak key CSS properties inside the global design system, and customize the translation dictionaries.
+Welcome to the advanced customization guide for this blog! Since the site is designed under pure minimalist aesthetics, the codebase is kept raw, transparent, and extremely easy to tweak. In this tutorial, we will show you how to update your biographical profile card, tweak key CSS properties inside the global design system, and customize the translation dictionaries.
 
 ---
 
@@ -45,7 +45,7 @@ export const SOCIALS = [
 
 ## 🎨 2. Customizing Themes and Color Schemes
 
-Zahit's design is fully controlled by CSS variables inside `src/styles/global.css`. You can completely restyle the theme color scheme and typography by editing the values defined inside the `:root` pseudo-selector:
+The design is fully controlled by CSS variables inside `src/styles/global.css`. You can completely restyle the theme color scheme and typography by editing the values defined inside the `:root` pseudo-selector:
 
 ```css
 :root {
@@ -105,6 +105,6 @@ Simply update the corresponding string values, or add new keys to adapt the dict
 
 ## Conclusion
 
-Zahit is built to remain out of your way and let your content shine. By leveraging the clean separation of `src/config.ts`, pure CSS tokens, and static dictionary keys, customizing your portfolio site is a matter of minutes.
+This blog is built to remain out of your way and let your content shine. By leveraging the clean separation of `src/config.ts`, CSS color tokens, and static dictionary keys, customizing your site is a matter of minutes.
 
 Happy coding, and enjoy sharing your thoughts with the world!

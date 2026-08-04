@@ -9,7 +9,7 @@ Welcome! I'm Aryan, a software developer interested in modern web technologies a
 
 ## About This Blog
 
-This blog is built with [Astro](https://astro.build) using the [Zahit](https://github.com/kuscadev/Zahit) theme — a raw, flat minimalist theme built on the philosophy that simplicity is depth. It supports bilingual content in Persian (Farsi) and English, with full right-to-left layout support for Persian.
+This blog is built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com). It supports bilingual content in Persian (Farsi) and English, with full right-to-left layout support for Persian and a dark/light theme toggle.
 
 ## Features
 
@@ -24,4 +24,4 @@ This blog is built with [Astro](https://astro.build) using the [Zahit](https://g
 
 ## License
 
-This blog's theme is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
+This blog is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).

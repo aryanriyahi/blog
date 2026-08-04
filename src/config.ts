@@ -1,5 +1,5 @@
 /**
- * Zahit - Site Configuration
+ * Aryan's Blog - Site Configuration
  * ----------------------------------------
  * Temayı kişiselleştirmek için bu dosyayı düzenleyin.
  * Edit this file to personalize your site.

@@ -1,12 +1,12 @@
 ---
-title: 'Zahit Theme: How to Write and Organize Content'
-description: 'Discover how to create bilingual posts, use content collections, and leverage Zahit’s smart language switching mechanism.'
+title: 'How to Write and Organize Content'
+description: "Discover how to create bilingual posts, use content collections, and leverage the blog's smart language switching mechanism."
 pubDate: '2026-05-21'
-tags: ['zahit-guide', 'usage', 'i18n']
-translationKey: 'zahit-usage'
+tags: ['guide', 'usage', 'i18n']
+translationKey: 'usage'
 ---
 
-One of Zahit's most powerful assets is its clean, out-of-the-box support for bilingual content management. This guide will walk you through the folder architecture of your posts, formatting your post metadata (frontmatter), and utilizing Zahit’s smart language switcher to link Persian and English posts.
+One of this blog's most powerful assets is its clean, out-of-the-box support for bilingual content management. This guide will walk you through the folder architecture of your posts, formatting your post metadata (frontmatter), and utilizing the smart language switcher to link Persian and English posts.
 
 ---
 
@@ -23,7 +23,7 @@ Astro automatically parses all files ending with `.md` or `.mdx` inside these su
 
 ## 📋 The Post Frontmatter Schema
 
-Every markdown post must contain a metadata block at the very top, enclosed by triple dashes `---`. Zahit's content collection schema enforces the following fields:
+Every markdown post must contain a metadata block at the very top, enclosed by triple dashes `---`. The content collection schema enforces the following fields:
 
 ```markdown
 ---
@@ -37,15 +37,15 @@ translationKey: 'unique-post-identifier'
 
 ### Explaining the Fields:
 - **`title` & `description`:** Essential fields rendered at the top of the article and dynamically injected into the HTML `<head>` tag for optimal SEO indexation.
-- **`pubDate`:** The publication date. Zahit uses this date to sort posts chronologically and group them dynamically by year inside the `/archive/` page.
-- **`tags`:** An array of tags. Make sure to include `zahit-guide` if you want them grouped under the theme guide archive.
+- **`pubDate`:** The publication date. The blog uses this date to sort posts chronologically and group them dynamically by year inside the `/archive/` page.
+- **`tags`:** An array of tags used to group related posts on the `/tags/` pages.
 - **`translationKey`:** A custom unique text key linking the Persian and English translations of the post together.
 
 ---
 
 ## 🌐 The Smart i18n Switching Mechanism
 
-Zahit implements an advanced routing system inside the header language navigation toggle. When a visitor is reading an English post and clicks **"FA"**, the theme does not simply bounce them to the Persian home page. 
+The blog implements an advanced routing system inside the header language navigation toggle. When a visitor is reading an English post and clicks **"FA"**, the blog does not simply bounce them to the Persian home page. 
 
 Instead, it searches through your blog collection to find a Persian post that shares the exact same `translationKey` value.
 
@@ -68,4 +68,4 @@ With this configuration, readers can toggle back and forth between English and P
 
 Now that you know how to organize and draft posts, you are ready to adjust the design tokens, switch colors, and modify your social link matrices.
 
-Read our final guide: **[Zahit Theme: Advanced Customization & Colors](/en/blog/customization/)** to learn more.
+Read our final guide: **[Advanced Customization & Colors](/en/blog/customization/)** to learn more.

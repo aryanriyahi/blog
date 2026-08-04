@@ -31,7 +31,7 @@ export const ui = {
     'nav.archive': 'Archive',
     'nav.tags': 'Tags',
     'home.title': 'Simplicity is Depth, Not Lack',
-    'home.subtitle': 'Zahit: A minimal Astro theme free from distractions, closing the gap between writer and reader.',
+    'home.subtitle': 'Minimal. Practical. Worth Sharing. A quiet space for writing, documenting, and thinking out loud.',
     'archive.title': 'All Posts',
     'archive.description': 'Thoughts and notes from past to present.',
     'post.publishedOn': 'Published on:',
