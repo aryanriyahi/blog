@@ -21,7 +21,7 @@ and **Tailwind CSS v4**. Persian (Farsi) is the default language with full
 - **Dark / light theme** — a sun/moon toggle switches `data-theme` on
   `<html>`, driven by CSS custom properties. Light/dark choice is saved in
   `localStorage` and system preference is followed until you choose.
-- **Self-hosted variable fonts** — Source Sans 3 (Latin) + Vazirmatn
+- **Self-hosted variable fonts** — Source Sans 3 (Latin) + Peyda
   (Persian/Arabic) served locally, with `unicode-range` so each script uses
   the right font automatically.
 - **Scroll-spy Table of Contents** — the blog post layout scans `h2`/`h3`
@@ -73,7 +73,7 @@ npx astro check    # type-check .astro files
 ├── package.json            # deps + npm scripts
 ├── wrangler.toml           # Cloudflare Pages deploy config (optional)
 ├── public/                 # static assets copied as-is (fonts, icons)
-│   └── fonts/              # self-hosted Source Sans 3 + Vazirmatn
+│   └── fonts/              # self-hosted Source Sans 3 + Peyda
 └── src/
     ├── config.ts           # 👤 site title, author bio, social links
     ├── content.config.ts   # content-collection schemas (blog + pages)

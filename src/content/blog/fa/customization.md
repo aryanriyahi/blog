@@ -57,8 +57,8 @@ export const SOCIALS = [
   --text-color: #daeaff;   /* سایه ملایم برای خوانایی متن */
 
   /* تایپوگرافی */
-  --font-family-body: 'Source Sans 3', 'Vazirmatn', sans-serif;
-  --font-family-heading: 'Source Sans 3', 'Vazirmatn', sans-serif;
+  --font-family-body: 'Source Sans 3', 'Peyda', sans-serif;
+  --font-family-heading: 'Source Sans 3', 'Peyda', sans-serif;
 
   /* عرض چیدمان */
   --site-width: 80%;

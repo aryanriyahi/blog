@@ -92,10 +92,10 @@ Edit `--site-width` and `--content-padding` in the shared `:root` block
 The site ships two self-hosted variable fonts (no external requests):
 
 - **Source Sans 3** (Latin) — `public/fonts/source-sans-3/`
-- **Vazirmatn** (Persian/Arabic) — `public/fonts/vazirmatn/`
+- **Peyda** (Persian/Arabic) — `public/fonts/peyda/`
 
 They're declared with `@font-face` and a `unicode-range` in `global.css`, so
-Latin text uses Source Sans 3 and Persian text automatically uses Vazirmatn.
+Latin text uses Source Sans 3 and Persian text automatically uses Peyda.
 The stacks live in `--font-family-body` / `--font-family-heading`.
 
 To swap a font: replace the `.woff2` files (keeping the same names) and update

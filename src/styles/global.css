@@ -80,13 +80,13 @@
         U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Vazirmatn — Persian/Arabic script */
+/* Peyda — Persian/Arabic script */
 @font-face {
-    font-family: "Vazirmatn";
+    font-family: "Peyda";
     font-style: normal;
     font-display: swap;
     font-weight: 100 900;
-    src: url("/fonts/vazirmatn/vazirmatn-arabic-wght-normal.woff2")
+    src: url("/fonts/peyda/peyda.woff2")
         format("woff2-variations");
     unicode-range:
         U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF,
@@ -152,8 +152,8 @@
 
 /* ---------- Shared design tokens ---------- */
 :root {
-    --font-family-body: "Source Sans 3", "Vazirmatn", sans-serif;
-    --font-family-heading: "Source Sans 3", "Vazirmatn", sans-serif;
+    --font-family-body: "Source Sans 3", "Peyda", sans-serif;
+    --font-family-heading: "Source Sans 3", "Peyda", sans-serif;
     --site-width: min(80%, calc(100% - 2rem));
     --content-padding: 2rem;
     --transition-speed: 0.2s;
