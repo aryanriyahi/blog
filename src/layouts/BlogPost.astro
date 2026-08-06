@@ -5,19 +5,22 @@ import BaseLayout from './BaseLayout.astro';
 import { useTranslations } from '../i18n/utils';
 import { getLangFromUrl } from '../i18n/utils';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getOGImage } from '../utils/og';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	headings?: MarkdownHeading[];
+	image?: string;
 };
 
-const { title, description, pubDate, updatedDate, tags, headings = [] } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, headings = [], image } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const ogImage = getOGImage(image, lang);
 
 const tocHeadings = headings.filter((h: MarkdownHeading) => h.depth === 2 || h.depth === 3);
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={ogImage}>
 	<div class="grid grid-cols-1 gap-12 items-start min-[860px]:grid-cols-[minmax(0,3fr)_minmax(0,1fr)] min-[860px]:gap-16">
 		<article class="min-w-0">
 			<header class="mb-12 text-center">

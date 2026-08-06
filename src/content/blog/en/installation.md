@@ -4,6 +4,7 @@ description: 'Learn how to easily install, configure, and get started with this 
 pubDate: '2026-05-17'
 tags: ['guide', 'installation', 'astro']
 translationKey: 'installation'
+image: '/og/installation-en.png'
 ---
 
 Welcome to the installation guide for this blog! It's a raw, flat minimalist Astro v7 site built on the philosophy that simplicity is depth. In this guide, we will walk you through the process of cloning the repository, installing the required dependencies, and starting the local development environment.

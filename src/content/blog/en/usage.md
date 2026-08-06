@@ -4,6 +4,7 @@ description: "Discover how to create bilingual posts, use content collections, a
 pubDate: '2026-05-21'
 tags: ['guide', 'usage', 'i18n']
 translationKey: 'usage'
+image: '/og/usage-en.png'
 ---
 
 One of this blog's most powerful assets is its clean, out-of-the-box support for bilingual content management. This guide will walk you through the folder architecture of your posts, formatting your post metadata (frontmatter), and utilizing the smart language switcher to link Persian and English posts.

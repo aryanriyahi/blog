@@ -4,6 +4,7 @@ description: 'A quick tour of how this blog works and how to write your first po
 pubDate: '2026-08-03'
 tags: ['guide', 'getting-started']
 translationKey: 'getting-started'
+image: '/og/getting-started-en.png'
 ---
 
 Welcome! This post is a working example you can copy when writing your own. It shows the frontmatter fields and the Markdown features you'll use most often for technical posts.

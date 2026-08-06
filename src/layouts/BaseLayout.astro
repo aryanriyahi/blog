@@ -8,15 +8,16 @@ import { getLangFromUrl } from '../i18n/utils';
 export interface Props {
 	title: string;
 	description: string;
+	image?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = '/og.png' } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 ---
 
 <html lang={lang} dir={lang === 'fa' ? 'rtl' : 'ltr'}>
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} image={image} />
 	</head>
 	<body class="min-h-screen flex flex-col items-center bg-bg text-text font-body text-lg leading-[1.7] antialiased overflow-x-clip max-[480px]:text-base">
 		<Header />

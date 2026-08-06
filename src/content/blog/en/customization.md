@@ -4,6 +4,7 @@ description: 'Step-by-step guide to modifying configuration variables, styling l
 pubDate: '2026-05-23'
 tags: ['guide', 'customization', 'css']
 translationKey: 'customization'
+image: '/og/customization-en.png'
 ---
 
 Welcome to the advanced customization guide for this blog! Since the site is designed under pure minimalist aesthetics, the codebase is kept raw, transparent, and extremely easy to tweak. In this tutorial, we will show you how to update your biographical profile card, tweak key CSS properties inside the global design system, and customize the translation dictionaries.

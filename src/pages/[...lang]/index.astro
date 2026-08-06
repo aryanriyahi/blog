@@ -29,7 +29,7 @@ posts.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pu
 const archiveLabel = currentLang === 'fa' ? 'همه نوشته‌ها →' : 'All posts →';
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} image="/og.png">
 	<div class="grid grid-cols-1 gap-8 items-start min-[860px]:grid-cols-[1fr_3fr] min-[860px]:gap-16">
 		<aside class="self-start min-[860px]:sticky min-[860px]:top-8">
 			<Profile />
