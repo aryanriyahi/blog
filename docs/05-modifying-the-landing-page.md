@@ -99,7 +99,6 @@ feed links and the **no-flicker theme script**. You rarely edit this file.
 
 Once your homepage and About page feel right, you're ready to deploy. Pick one:
 
-- [Deploy to GitHub Pages →](./06-deploy-github-pages.md) (free, lives in your GitHub repo)
 - [Deploy to Vercel →](./07-deploy-vercel.md)
 - [Deploy to Netlify →](./08-deploy-netlify.md)
-- [Deploy to Cloudflare Pages →](./09-deploy-cloudflare.md) (recommended)
+- [Deploy to Cloudflare Workers →](./09-deploy-cloudflare.md) (recommended)

@@ -22,7 +22,9 @@ domain root, so no `base` setting is needed.
 ## Step 2 — Push your code to GitHub
 
 Netlify deploys from a Git repo, so push your project to GitHub/GitLab/Bitbucket
-first (see Step 2 in the GitHub Pages guide for the git commands).
+first: create a repo on your Git provider, then from the project root run
+`git init`, `git add -A`, `git commit -m "Initial commit"`,
+`git remote add origin <repo-url>`, and `git push -u origin main`.
 
 ## Step 3 — Import the project on Netlify
 

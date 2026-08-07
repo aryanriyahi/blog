@@ -16,10 +16,9 @@ need each topic.
 | 3 | [Writing a blog post](./03-writing-a-post.md) | Create Persian/English posts, frontmatter, translation keys, images |
 | 4 | [Modifying the layout](./04-modifying-the-layout.md) | The post page, Tailwind utilities, theme colors, dark/light toggle |
 | 5 | [Modifying the landing page](./05-modifying-the-landing-page.md) | Homepage, About page, header nav, footer, site name |
-| 6 | [Deploy to GitHub Pages](./06-deploy-github-pages.md) | Publish free on `username.github.io` |
-| 7 | [Deploy to Vercel](./07-deploy-vercel.md) | Publish on Vercel (custom domains, instant previews) |
-| 8 | [Deploy to Netlify](./08-deploy-netlify.md) | Publish on Netlify (custom domains, instant previews) |
-| 9 | [Deploy to Cloudflare Pages](./09-deploy-cloudflare.md) | Publish on Cloudflare (global CDN, free HTTPS, previews) |
+| 6 | [Deploy to Vercel](./07-deploy-vercel.md) | Publish on Vercel (custom domains, instant previews) |
+| 7 | [Deploy to Netlify](./08-deploy-netlify.md) | Publish on Netlify (custom domains, instant previews) |
+| 8 | [Deploy to Cloudflare Workers](./09-deploy-cloudflare.md) | Publish on Cloudflare (global CDN, free HTTPS, previews, geo-based language redirect) |
 
 ## Quick reference — common commands
 

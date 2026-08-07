@@ -25,7 +25,9 @@ right after the first deploy.)
 ## Step 2 — Push your code to GitHub
 
 Vercel deploys from a Git repo, so push your project to GitHub/GitLab/Bitbucket
-first (see Step 2 in the GitHub Pages guide for the git commands).
+first: create a repo on your Git provider, then from the project root run
+`git init`, `git add -A`, `git commit -m "Initial commit"`,
+`git remote add origin <repo-url>`, and `git push -u origin main`.
 
 ## Step 3 — Import the project on Vercel
 

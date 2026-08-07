@@ -62,7 +62,16 @@ if (isPost && route) {
 						
 						return (
 						<li>
-							<a href={getRelativeLocaleUrl(abbr, targetRoute)} class={`text-[0.85rem] font-semibold px-[0.4rem] py-[0.2rem] rounded hover:text-heading hover:bg-bg-hover ${lang === abbr ? 'text-bg bg-light' : 'text-faint'}`}>
+							<a
+								href={getRelativeLocaleUrl(abbr, targetRoute)}
+								data-lang-save={abbr}
+								class={`
+									lang-switch-link
+									text-[0.85rem] font-semibold px-[0.4rem] py-[0.2rem] rounded
+									hover:text-heading hover:bg-bg-hover
+									${lang === abbr ? 'text-bg bg-light' : 'text-faint'}
+								`}
+							>
 								{abbr.toUpperCase()}
 							</a>
 						</li>
@@ -92,4 +101,23 @@ if (isPost && route) {
 			}
 		});
 	}
+
+	// Persist manual language selection so it overrides geo-detection.
+	document.querySelectorAll('.lang-switch-link').forEach((link) => {
+		link.addEventListener('click', () => {
+			const abbr = link.getAttribute('data-lang-save');
+			if (abbr === 'fa' || abbr === 'en') {
+				try {
+					localStorage.setItem('preferredLang', abbr);
+				} catch (e) {
+					// ignore write failures (private mode, etc.)
+				}
+				// Also set a cookie so the Cloudflare worker (which can't read
+				// localStorage) honors the manual override on future requests.
+				document.cookie = 'preferredLang=' + abbr +
+					'; path=/; max-age=31536000; samesite=lax' +
+					(location.protocol === 'https:' ? '; secure' : '');
+			}
+		});
+	});
 </script>

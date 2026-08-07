@@ -33,9 +33,10 @@ zero terminal steps) or the **`wrangler` CLI**. Both produce a free
 
 ### Step 1 — Push your code to GitHub
 
-Push the project to GitHub (see Step 2 in the GitHub Pages guide for the git
-commands). The repo already has the `dist/` output ignored, so only source is
-committed.
+Push the project to GitHub: create a repo on your provider, then from the
+project root run `git init`, `git add -A`, `git commit -m "Initial commit"`,
+`git remote add origin <repo-url>`, and `git push -u origin main`. The repo
+already has the `dist/` output ignored, so only source is committed.
 
 ### Step 2 — Create a Pages project
 

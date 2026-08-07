@@ -201,28 +201,24 @@ but enable the tag pages.
 
 ## 🚢 Deployment
 
-This is a fully static site — deploy the `dist/` output anywhere. Recommended:
+This is a fully static site — deploy the `dist/` output (with `_worker.js`)
+anywhere. Recommended (this repo is set up for it):
 
 | Host | Guide |
 |------|-------|
-| **Cloudflare Pages** | [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md) |
+| **Cloudflare Workers** (static assets + edge worker) | [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md) |
 | Netlify | [`docs/08-deploy-netlify.md`](docs/08-deploy-netlify.md) |
 | Vercel | [`docs/07-deploy-vercel.md`](docs/07-deploy-vercel.md) |
-| GitHub Pages | [`docs/06-deploy-github-pages.md`](docs/06-deploy-github-pages.md) |
 
 All hosts: build command `npm run build`, publish directory `dist`, Node 22.
 Before deploying, set `site` in `astro.config.mjs` to your real domain so the
 RSS feed and canonical URLs are correct.
 
-### Cloudflare Pages (quickest)
-
-1. In the Cloudflare dashboard → **Workers & Pages → Create → Pages**.
-2. **Connect to Git**, pick this repo, set **Build command** `npm run build`
-   and **Build output directory** `dist`.
-3. Deploy. You get a free `https://<project>.pages.dev` URL with HTTPS.
-
-Full step-by-step (Git integration + `wrangler` CLI + custom domains):
-see [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
+> The `dist/_worker.js` file (Copied from `public/_worker.js` at build time)
+> powers **geo-based language detection**: visitors from Iran get Persian,
+> everyone else gets English, and a manual choice is respected. It only runs on
+> Cloudflare Workers — on plain static hosts the client-side fallback takes
+> over. See [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
 
 ---
 
@@ -230,7 +226,7 @@ see [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
 
 The full beginner-friendly guide lives in [`docs/`](docs/README.md):
 project overview, running locally, writing posts, customizing layout and
-landing page, and deploying to GitHub Pages / Vercel / Netlify / Cloudflare.
+landing page, and deploying to Cloudflare Workers / Vercel / Netlify.
 
 ---
 
