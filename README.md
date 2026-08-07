@@ -201,8 +201,9 @@ but enable the tag pages.
 
 ## 🚢 Deployment
 
-This is a fully static site — deploy the `dist/` output (with `_worker.js`)
-anywhere. Recommended (this repo is set up for it):
+This is a fully static site with an edge worker — deploy the `dist/` output plus
+`src/worker.js` (see [`wrangler.toml`](wrangler.toml)). Recommended
+(this repo is set up for it):
 
 | Host | Guide |
 |------|-------|
@@ -214,11 +215,12 @@ All hosts: build command `npm run build`, publish directory `dist`, Node 22.
 Before deploying, set `site` in `astro.config.mjs` to your real domain so the
 RSS feed and canonical URLs are correct.
 
-> The `dist/_worker.js` file (Copied from `public/_worker.js` at build time)
-> powers **geo-based language detection**: visitors from Iran get Persian,
-> everyone else gets English, and a manual choice is respected. It only runs on
-> Cloudflare Workers — on plain static hosts the client-side fallback takes
-> over. See [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
+> [`src/worker.js`](src/worker.js) powers **geo-based language detection**:
+> visitors from Iran get Persian, everyone else gets English, and a manual
+> choice (a `preferredLang` cookie) is always respected. It runs on every
+> request on Cloudflare Workers (see `run_worker_first` in `wrangler.toml`);
+> on plain static hosts the client-side fallback takes over. See
+> [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
 
 ---
 

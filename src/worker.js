@@ -1,24 +1,22 @@
 /**
- * Cloudflare Workers static-assets edge worker.
+ * Cloudflare Workers "static assets + worker" entrypoint.
  *
- * Sits in front of the static blog files (dist/) and decides the locale to
- * serve based on:
+ * Runs on EVERY request (run_worker_first = true), before the static files
+ * in dist/ are served. Decides the locale:
  *   1. A `preferredLang` cookie (set when the user manually switches) — wins.
  *   2. Otherwise, IP geolocation via `request.cf.country` — Iran ("IR") -> fa,
  *      everyone else -> en.
  *
- * If the resolved locale differs from the URL's current locale, we issue a
- * redirect to the correct locale path; otherwise we serve the static asset
- * untouched via env.ASSETS.fetch().
+ * If the resolved locale differs from the URL's locale, we issue a 302
+ * redirect to the correct locale path; otherwise we serve the matching static
+ * asset via env.ASSETS.fetch().
  *
- * This also means static pages are never built conditionally: both / (fa) and
- * /en/ (en) HTML files exist, and this worker just routes the visitor.
+ * NOTE: ../src/worker.js is bundled by wrangler (see wrangler.toml `main`).
+ * It must NOT be copied into dist/ (keep it out of public/).
  */
 
 const PREF_COOKIE = 'preferredLang';
 const VALID = ['fa', 'en'];
-const DEFAULT_FA = 'fa';
-const DEFAULT_EN = 'en';
 
 /** Read a single cookie value from the Cookie header, or null. */
 function getCookie(request, name) {
@@ -34,19 +32,16 @@ function getCookie(request, name) {
 	return null;
 }
 
-/** Returns the locale encoded in the pathname: '' -> fa (default), else 'en'. */
+/** Locale encoded in the pathname: '' -> fa (default), 'en' -> en. */
 function currentLang(pathname) {
-	// "/en/..." -> en ; everything else is the default (fa)
-	if (pathname === '/' || pathname === '') return DEFAULT_FA;
+	if (pathname === '/' || pathname === '') return 'fa';
 	const first = pathname.split('/').filter(Boolean)[0];
-	if (first === 'en') return 'en';
-	return DEFAULT_FA;
+	return first === 'en' ? 'en' : 'fa';
 }
 
 /** Rewrite the pathname to the given locale, preserving the rest of the route. */
 function toLocalePath(locale, pathname) {
 	const segments = pathname.split('/').filter(Boolean);
-	// Strip any existing locale prefix
 	if (segments[0] === 'en') segments.shift();
 
 	const parts = [];
@@ -54,7 +49,6 @@ function toLocalePath(locale, pathname) {
 	parts.push(...segments);
 
 	let result = '/' + parts.join('/');
-	// Preserve trailing slash but avoid "//" on locale roots.
 	if (pathname.endsWith('/') && result !== '/') result += '/';
 	return result;
 }
@@ -62,18 +56,20 @@ function toLocalePath(locale, pathname) {
 export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
+		const urlKey = url.origin + url.pathname;
+
+		// Never intercept requests for immutable/cacheable static assets other
+		// than HTML documents — let those through untouched.
+		const ext = (url.pathname.match(/\.[a-z0-9]+$/i) || [])[0];
+		const isDocument = !ext || ext === '.html';
+		if (!isDocument) {
+			return env.ASSETS.fetch(request);
+		}
 
 		const cookieLang = getCookie(request, PREF_COOKIE);
 		const saved = VALID.includes(cookieLang) ? cookieLang : null;
 
-		let wanted;
-		if (saved) {
-			wanted = saved;
-		} else {
-			const country = (request.cf && request.cf.country) || '';
-			wanted = country === 'IR' ? DEFAULT_FA : DEFAULT_EN;
-		}
-
+		const wanted = saved || ((request.cf && request.cf.country) === 'IR' ? 'fa' : 'en');
 		const cur = currentLang(url.pathname);
 
 		if (wanted !== cur) {
@@ -83,7 +79,7 @@ export default {
 			return Response.redirect(target.toString(), 302);
 		}
 
-		// Serve the static file (html, assets, etc.).
+		// Serve the static file.
 		return env.ASSETS.fetch(request);
 	},
 };
