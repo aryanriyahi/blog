@@ -215,11 +215,11 @@ All hosts: build command `npm run build`, publish directory `dist`, Node 22.
 Before deploying, set `site` in `astro.config.mjs` to your real domain so the
 RSS feed and canonical URLs are correct.
 
-> [`src/worker.js`](src/worker.js) powers **geo-based language detection**:
+> [`src/worker.js`](src/worker.js) powers the **auto language redirect**:
 > visitors from Iran get Persian, everyone else gets English, and a manual
-> choice (a `preferredLang` cookie) is always respected. It runs on every
-> request on Cloudflare Workers (see `run_worker_first` in `wrangler.toml`);
-> on plain static hosts the client-side fallback takes over. See
+> choice (the `preferredLang` cookie set by the header switcher) is always
+> respected. It runs on every request via `run_worker_first` in
+> `wrangler.toml`. See
 > [`docs/09-deploy-cloudflare.md`](docs/09-deploy-cloudflare.md).
 
 ---
