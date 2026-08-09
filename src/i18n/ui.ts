@@ -29,6 +29,9 @@ export const ui = {
     'pagination.previous': 'قبلی',
     'pagination.next': 'بعدی',
     'pagination.page': 'صفحه',
+    'episode.previous': 'بخش قبلی',
+    'episode.next': 'بخش بعدی',
+    'episode.series': 'سری',
   },
   en: {
     'nav.home': 'Home',
@@ -53,5 +56,8 @@ export const ui = {
     'pagination.previous': 'Previous',
     'pagination.next': 'Next',
     'pagination.page': 'Page',
+    'episode.previous': 'Previous Chapter',
+    'episode.next': 'Next Chapter',
+    'episode.series': 'Series',
   },
 } as const;

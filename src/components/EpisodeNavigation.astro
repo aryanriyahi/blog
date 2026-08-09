@@ -1,0 +1,173 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { getLangFromUrl } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+interface Props {
+	currentPost: CollectionEntry<'blog'>;
+}
+
+const { currentPost } = Astro.props;
+
+// Safety check - if no post or no series field, don't render
+if (!currentPost?.data?.series) {
+	return null;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const allPosts: CollectionEntry<'blog'>[] = await getCollection('blog');
+const seriesPosts = allPosts
+	.filter(
+		(post: CollectionEntry<'blog'>) =>
+			post.data.series === currentPost.data.series &&
+			post.id.startsWith(`${lang}/`) &&
+			post.id !== currentPost.id,
+	)
+	.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => {
+		// Sort by episodeNumber if both have it
+		if (a.data.episodeNumber && b.data.episodeNumber) {
+			return a.data.episodeNumber - b.data.episodeNumber;
+		}
+		// Fallback to pubDate if episodeNumber is missing
+		return a.data.pubDate.valueOf() - b.data.pubDate.valueOf();
+	});
+
+const currentEpisodeNumber = currentPost.data.episodeNumber ?? 0;
+const currentPubDate = currentPost.data.pubDate;
+
+// Sort including current post to find position
+const sortedPosts = [
+	currentPost,
+	...seriesPosts,
+].sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => {
+	if (a.data.episodeNumber && b.data.episodeNumber) {
+		return a.data.episodeNumber - b.data.episodeNumber;
+	}
+	return a.data.pubDate.valueOf() - b.data.pubDate.valueOf();
+});
+
+const currentIndex = sortedPosts.findIndex(
+	(post: CollectionEntry<'blog'>) => post.id === currentPost.id,
+);
+
+const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+
+// Don't render if there's no navigation
+if (!prevPost && !nextPost) {
+	return null;
+}
+
+const slugWithoutLang = (post: CollectionEntry<'blog'>) =>
+	post.id.replace(`${lang}/`, '');
+
+const episodeLabel = (episodeNumber?: number) =>
+	episodeNumber ? `#${episodeNumber}` : '';
+
+// In RTL, grid columns are reversed, so we need to swap the order
+// to keep "Previous" on the left and "Next" on the right
+const isRTL = lang === 'fa';
+const firstItem = isRTL ? (nextPost ? 'next' : 'prev') : 'prev';
+const secondItem = isRTL ? (prevPost ? 'prev' : 'next') : 'next';
+---
+
+{prevPost || nextPost ? (
+	<nav
+		class="mt-16 pt-8 border-t border-border"
+		aria-label={t('episode.series')}
+	>
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+			{firstItem === 'prev' && prevPost ? (
+				<a
+					href={getRelativeLocaleUrl(lang, `blog/${slugWithoutLang(prevPost)}`)}
+					class="group flex flex-col gap-2 rounded-xl border border-border bg-bg p-5 transition-all duration-200 hover:border-accent hover:bg-bg-hover hover:shadow-md no-underline ltr:items-start rtl:items-end"
+				>
+					<span class="text-xs font-semibold tracking-wider uppercase text-muted">
+						{t('episode.previous')}
+					</span>
+					<span class="flex items-center gap-2 text-sm font-medium text-light">
+						<span class="inline-flex items-center justify-center rounded-full bg-accent-tint px-2.5 py-0.5 text-xs font-bold text-accent">
+							{episodeLabel(prevPost.data.episodeNumber)}
+						</span>
+						<span class="line-clamp-2 group-hover:text-accent transition-colors">
+							{prevPost.data.title}
+						</span>
+					</span>
+					<span class="text-muted transition-colors ltr:group-hover:-translate-x-1 rtl:group-hover:translate-x-1">
+						←
+					</span>
+				</a>
+			) : firstItem === 'next' && nextPost ? (
+				<a
+					href={getRelativeLocaleUrl(lang, `blog/${slugWithoutLang(nextPost)}`)}
+					class="group flex flex-col gap-2 rounded-xl border border-border bg-bg p-5 transition-all duration-200 hover:border-accent hover:bg-bg-hover hover:shadow-md no-underline ltr:items-end rtl:items-start text-left ltr:text-right rtl:text-left"
+				>
+					<span class="text-xs font-semibold tracking-wider uppercase text-muted">
+						{t('episode.next')}
+					</span>
+					<span class="flex items-center gap-2 text-sm font-medium text-light ltr:flex-row-reverse rtl:flex-row">
+						<span class="inline-flex items-center justify-center rounded-full bg-accent-tint px-2.5 py-0.5 text-xs font-bold text-accent">
+							{episodeLabel(nextPost.data.episodeNumber)}
+						</span>
+						<span class="line-clamp-2 group-hover:text-accent transition-colors">
+							{nextPost.data.title}
+						</span>
+					</span>
+					<span class="text-muted transition-colors ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+						→
+					</span>
+				</a>
+			) : (
+				<div />
+			)}
+
+			{secondItem === 'prev' && prevPost ? (
+				<a
+					href={getRelativeLocaleUrl(lang, `blog/${slugWithoutLang(prevPost)}`)}
+					class="group flex flex-col gap-2 rounded-xl border border-border bg-bg p-5 transition-all duration-200 hover:border-accent hover:bg-bg-hover hover:shadow-md no-underline ltr:items-start rtl:items-end"
+				>
+					<span class="text-xs font-semibold tracking-wider uppercase text-muted">
+						{t('episode.previous')}
+					</span>
+					<span class="flex items-center gap-2 text-sm font-medium text-light">
+						<span class="inline-flex items-center justify-center rounded-full bg-accent-tint px-2.5 py-0.5 text-xs font-bold text-accent">
+							{episodeLabel(prevPost.data.episodeNumber)}
+						</span>
+						<span class="line-clamp-2 group-hover:text-accent transition-colors">
+							{prevPost.data.title}
+						</span>
+					</span>
+					<span class="text-muted transition-colors ltr:group-hover:-translate-x-1 rtl:group-hover:translate-x-1">
+						←
+					</span>
+				</a>
+			) : secondItem === 'next' && nextPost ? (
+				<a
+					href={getRelativeLocaleUrl(lang, `blog/${slugWithoutLang(nextPost)}`)}
+					class="group flex flex-col gap-2 rounded-xl border border-border bg-bg p-5 transition-all duration-200 hover:border-accent hover:bg-bg-hover hover:shadow-md no-underline ltr:items-end rtl:items-start text-left ltr:text-right rtl:text-left"
+				>
+					<span class="text-xs font-semibold tracking-wider uppercase text-muted">
+						{t('episode.next')}
+					</span>
+					<span class="flex items-center gap-2 text-sm font-medium text-light ltr:flex-row-reverse rtl:flex-row">
+						<span class="inline-flex items-center justify-center rounded-full bg-accent-tint px-2.5 py-0.5 text-xs font-bold text-accent">
+							{episodeLabel(nextPost.data.episodeNumber)}
+						</span>
+						<span class="line-clamp-2 group-hover:text-accent transition-colors">
+							{nextPost.data.title}
+						</span>
+					</span>
+					<span class="text-muted transition-colors ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+						→
+					</span>
+				</a>
+			) : (
+				<div />
+			)}
+		</div>
+	</nav>
+) : null}

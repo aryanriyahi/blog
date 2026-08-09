@@ -6,13 +6,16 @@ import { useTranslations } from '../i18n/utils';
 import { getLangFromUrl } from '../i18n/utils';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getOGImage } from '../utils/og';
+import EpisodeNavigation from '../components/EpisodeNavigation.astro';
 
-type Props = CollectionEntry<'blog'>['data'] & {
+type Props = {
+	post: CollectionEntry<'blog'>;
 	headings?: MarkdownHeading[];
 	image?: string;
 };
 
-const { title, description, pubDate, updatedDate, tags, headings = [], image } = Astro.props;
+const { post, headings = [], image } = Astro.props;
+const { title, description, pubDate, updatedDate, tags } = post.data;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const ogImage = getOGImage(image, lang);
@@ -62,6 +65,8 @@ const tocHeadings = headings.filter((h: MarkdownHeading) => h.depth === 2 || h.d
 			<div class="prose prose-lg max-w-none break-words">
 				<slot />
 			</div>
+
+			<EpisodeNavigation currentPost={post} />
 
 		</article>
 
