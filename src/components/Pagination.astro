@@ -1,0 +1,104 @@
+---
+import { useTranslations } from '../i18n/utils';
+import { ui } from '../i18n/ui';
+
+interface Props {
+	currentPage: number;
+	totalPages: number;
+	/** Base path of the paginated listing, no trailing slash (e.g. `/blog`). */
+	base: string;
+	lang: string;
+}
+
+const { currentPage, totalPages, base, lang } = Astro.props;
+const t = useTranslations(lang as keyof typeof ui);
+
+/** URL for a page number: page 1 is the bare listing, the rest `/blog/2`, ... */
+const pageHref = (n: number) => (n === 1 ? `${base}/` : `${base}/${n}`);
+
+/** Localized page number (Persian digits for `fa`). */
+const pageNumber = (n: number) => n.toLocaleString(lang);
+
+/** Compact page list with ellipses; first and last are always visible. */
+function visiblePages(current: number, total: number): (number | '…')[] {
+	if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+	const wanted = new Set([1, total, current - 1, current, current + 1]);
+	const nums = [...wanted].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+
+	const out: (number | '…')[] = [];
+	let prev = 0;
+	for (const n of nums) {
+		if (prev && n - prev > 1) out.push('…');
+		out.push(n);
+		prev = n;
+	}
+	return out;
+}
+
+const pages = visiblePages(currentPage, totalPages);
+const hasPrev = currentPage > 1;
+const hasNext = currentPage < totalPages;
+
+const btnBase =
+	'inline-flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-md border border-border-faint bg-bg-panel px-3 text-[0.85rem] font-medium no-underline transition-colors duration-200';
+const btnEnabled = 'text-light hover:border-accent hover:bg-bg-hover hover:text-heading';
+const btnDisabled = 'pointer-events-none text-faint opacity-50';
+const btnCurrent = 'cursor-default border-accent bg-accent-tint font-bold text-heading';
+---
+
+{totalPages > 1 && (
+	<nav class="mt-14" aria-label={t('pagination.page')} data-pagefind-ignore>
+		<ul class="flex flex-wrap list-none items-center justify-center gap-1.5 p-0 m-0">
+			<li>
+				{hasPrev ? (
+					<a rel="prev" href={pageHref(currentPage - 1)} class={`${btnBase} ${btnEnabled}`}>
+						<svg class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+						{t('pagination.previous')}
+					</a>
+				) : (
+					<span class={`${btnBase} ${btnDisabled}`} aria-disabled="true">
+						<svg class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+						{t('pagination.previous')}
+					</span>
+				)}
+			</li>
+
+			{pages.map((item, index) =>
+				item === '…' ? (
+					<li>
+						<span class="flex h-9 min-w-9 items-center justify-center px-1 text-[0.85rem] text-faint" aria-hidden="true">…</span>
+					</li>
+				) : item === currentPage ? (
+					<li>
+						<span class={`${btnBase} ${btnCurrent}`} aria-current="page">
+							<span class="sr-only">{t('pagination.page')} </span>
+							{pageNumber(item)}
+						</span>
+					</li>
+				) : (
+					<li>
+						<a href={pageHref(item)} class={`${btnBase} ${btnEnabled}`}>
+							<span class="sr-only">{t('pagination.page')} </span>
+							{pageNumber(item)}
+						</a>
+					</li>
+				),
+			)}
+
+			<li>
+				{hasNext ? (
+					<a rel="next" href={pageHref(currentPage + 1)} class={`${btnBase} ${btnEnabled}`}>
+						{t('pagination.next')}
+						<svg class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+					</a>
+				) : (
+					<span class={`${btnBase} ${btnDisabled}`} aria-disabled="true">
+						{t('pagination.next')}
+						<svg class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+					</span>
+				)}
+			</li>
+		</ul>
+	</nav>
+)}

@@ -1,0 +1,3 @@
+{
+  "excludeSelectors": ["header", "footer", "nav", ".pagefind-search", "[data-pagefind-ignore]"]
+}

@@ -1,0 +1,134 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="relative" data-pagefind-ignore>
+	<button
+		id="pagefind-search-trigger"
+		type="button"
+		class="flex size-8 items-center justify-center rounded-md border border-border-faint bg-bg-panel p-0 text-[1.15rem] text-muted cursor-pointer transition-all duration-200 hover:border-border hover:bg-bg-hover hover:text-heading"
+		aria-label={t('search.label')}
+		title={t('search.label')}
+		aria-haspopup="dialog"
+		aria-controls="pagefind-search-dialog"
+	>
+		<Icon name="mdi:magnify" />
+	</button>
+
+	{/*
+		Pagefind Component UI (web components). Both elements are inert until the
+		script is loaded on the first click, so NO Pagefind bytes reach the browser
+		on page mount (Islands: static markup + tiny hydrated island below).
+	*/}
+	<pagefind-config lang={lang}></pagefind-config>
+	<pagefind-modal id="pagefind-search-dialog" class="pagefind-search" reset-on-close></pagefind-modal>
+
+	<p
+		id="pagefind-search-error"
+		class="fixed inset-x-0 bottom-6 z-50 mx-auto hidden w-max max-w-[min(92vw,32rem)] rounded-md border border-accent-border bg-bg-panel px-4 py-2.5 text-xs leading-relaxed text-soft shadow-lg"
+		role="status"
+	>
+		{t('search.notAvailable')}
+	</p>
+</div>
+
+<script>
+	interface PagefindModalElement extends HTMLElement {
+		open: () => void;
+	}
+
+	const trigger = document.getElementById(
+		'pagefind-search-trigger',
+	) as HTMLButtonElement | null;
+	const modal = document.querySelector<PagefindModalElement>('pagefind-modal');
+	const fallback = document.getElementById('pagefind-search-error');
+
+	/** True once the Pagefind bundle has been fetched and evaluated. */
+	let loaded = false;
+	/** Guards against re-entrancy while the import is in flight. */
+	let loading = false;
+	let fallbackTimer: number | undefined;
+
+	/** Fetch CSS + JS only on first use (dynamic import of the ES module). */
+	async function loadPagefind(): Promise<void> {
+		if (loaded || loading) return;
+
+		loading = true;
+		try {
+			// Styles are only needed once the dialog can actually open.
+			const uiCss = document.createElement('link');
+			uiCss.rel = 'stylesheet';
+			uiCss.href = '/pagefind/pagefind-component-ui.css';
+			document.head.appendChild(uiCss);
+
+			// The Pagefind Component UI is a real ES module — import() it on demand.
+			const uiJs = '/pagefind/pagefind-component-ui.js';
+			await import(/* @vite-ignore */ uiJs);
+
+			loaded = true;
+		} finally {
+			loading = false;
+		}
+	}
+
+	function showFallback(): void {
+		if (!fallback) return;
+		fallback.hidden = false;
+		window.clearTimeout(fallbackTimer);
+		fallbackTimer = window.setTimeout(() => {
+			fallback.hidden = true;
+		}, 6000);
+	}
+
+	async function openSearch(): Promise<void> {
+		try {
+			await loadPagefind();
+
+			// Restore keyboard focus to the trigger when the native <dialog> closes.
+			modal?.querySelector('dialog')?.addEventListener(
+				'close',
+				() => trigger?.focus(),
+				{ once: true },
+			);
+
+			modal?.open();
+		} catch (error) {
+			// The index is missing — typically `astro dev` before the first build.
+			// In dev the index is served from dist/pagefind/ once `npm run build` ran.
+			if (import.meta.env.DEV) {
+				// Expected local-only condition; no need to alarm users.
+				console.info('[SearchPagefind] search index not found. Run `npm run build` once to generate it, then retry.');
+			} else {
+				console.error('[SearchPagefind] failed to load the Pagefind bundle:', error);
+			}
+			showFallback();
+		}
+	}
+
+	trigger?.addEventListener('click', () => void openSearch());
+
+	function isTypingTarget(el: Element | null): boolean {
+		return (
+			el !== null &&
+			(el.tagName === 'INPUT' ||
+				el.tagName === 'TEXTAREA' ||
+				(el instanceof HTMLElement && el.isContentEditable))
+		);
+	}
+
+	// Shortcuts: Cmd/Ctrl+K or "/" (matches Pagefind's trigger defaults).
+	document.addEventListener('keydown', (event) => {
+		const isMetaK =
+			(event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k';
+		const isSlash = event.key === '/' && !isTypingTarget(document.activeElement);
+
+		if (isMetaK || isSlash) {
+			event.preventDefault();
+			void openSearch();
+		}
+	});
+</script>

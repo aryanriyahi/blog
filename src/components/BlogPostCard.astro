@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getOGImage } from '../utils/og';
+
+interface Props {
+	/** The blog post entry to render as a card cell. */
+	post: CollectionEntry<'blog'>;
+	/** Active locale (`fa` or `en`) — drives links and date formatting. */
+	lang: string;
+}
+
+const { post, lang } = Astro.props;
+
+const slug = post.id.replace(`${lang}/`, '');
+const href = getRelativeLocaleUrl(lang, `blog/${slug}`);
+const ogImage = getOGImage(post.data.image, lang);
+
+const dateLabel = post.data.pubDate.toLocaleDateString(lang, {
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+});
+---
+
+<a
+	href={href}
+	class="group relative flex flex-col overflow-hidden rounded-lg border border-border-faint bg-bg-panel no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-border hover:shadow-[0_8px_24px_rgba(0,0,0,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+>
+	<div class="aspect-video w-full overflow-hidden bg-bg-hover">
+		<img
+			src={ogImage}
+			alt=""
+			width={1200}
+			height={630}
+			loading="lazy"
+			decoding="async"
+			class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+		/>
+	</div>
+
+	<div class="flex min-w-0 flex-1 flex-col gap-1 p-2.5 sm:p-3">
+		<h3 class="m-0 text-[0.85rem] font-semibold leading-snug text-light transition-colors duration-200 group-hover:text-heading sm:text-[0.9rem] line-clamp-2">
+			{post.data.title}
+		</h3>
+		<!-- Description is hidden on small/2-column screens to keep cells compact. -->
+		<p class="m-0 hidden text-[0.72rem] leading-relaxed text-faint md:line-clamp-2 sm:text-[0.76rem] md:block">
+			{post.data.description}
+		</p>
+		<time
+			datetime={post.data.pubDate.toISOString()}
+			class="mt-auto pt-1.5 text-[0.68rem] text-soft"
+		>
+			{dateLabel}
+		</time>
+	</div>
+</a>

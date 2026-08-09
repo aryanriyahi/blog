@@ -6,6 +6,7 @@ import type { CollectionEntry } from 'astro:content';
 import { SITE_CONFIG } from '../config';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { Icon } from 'astro-icon/components';
+import SearchPagefind from './SearchPagefind.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -28,15 +29,18 @@ if (isPost && route) {
 <header class="w-[var(--site-width)] py-6">
 	<nav class="flex flex-wrap justify-between items-center gap-3 sm:flex-nowrap">
 		<div>
-			<a href={getRelativeLocaleUrl(lang, '')} class="text-2xl font-bold text-heading tracking-tight hover:text-accent">{SITE_CONFIG.title}</a>
+			<a href={getRelativeLocaleUrl(lang, '')} class="flex items-center">
+				<img src="/logo.png" alt={SITE_CONFIG.title} class="h-16 sm:h-18 w-auto" />
+			</a>
 		</div>
 		<div class="flex gap-6 order-3 w-full justify-center sm:order-none sm:w-auto sm:justify-start">
 			<a href={getRelativeLocaleUrl(lang, '')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.home')}</a>
-			<a href={getRelativeLocaleUrl(lang, 'archive')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.archive')}</a>
+			<a href={getRelativeLocaleUrl(lang, 'blog')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.archive')}</a>
 			<a href={getRelativeLocaleUrl(lang, 'tags')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.tags')}</a>
 			<a href={getRelativeLocaleUrl(lang, 'about')} class="text-[0.95rem] font-medium text-light hover:text-heading">{t('nav.about')}</a>
 		</div>
 		<div class="flex items-center gap-3 ms-auto sm:ms-0">
+			<SearchPagefind />
 			<button id="theme-toggle" class="theme-toggle flex items-center justify-center size-8 text-[1.15rem] rounded-md border border-border-faint bg-bg-panel text-muted cursor-pointer p-0 transition-all duration-200 hover:text-heading hover:bg-bg-hover hover:border-border" type="button" aria-label="Toggle color theme" title="Toggle theme">
 				<Icon name="mdi:weather-sunny" class="icon-sun" />
 				<Icon name="mdi:weather-night" class="icon-moon" />

@@ -7,9 +7,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "pagefind": "pagefind --site dist"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@iconify-json/mdi": "^1.2.3",
+    "pagefind": "^1.5.2",
     "typescript": "^6.0.3"
   }
 }

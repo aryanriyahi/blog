@@ -22,7 +22,7 @@ const tocHeadings = headings.filter((h: MarkdownHeading) => h.depth === 2 || h.d
 
 <BaseLayout title={title} description={description} image={ogImage}>
 	<div class="grid grid-cols-1 gap-12 items-start min-[860px]:grid-cols-[minmax(0,3fr)_minmax(0,1fr)] min-[860px]:gap-16">
-		<article class="min-w-0">
+		<article class="min-w-0" data-pagefind-body>
 			<header class="mb-12 text-center">
 				<h1 class="text-[clamp(1.6rem,4.5vw,2.5rem)] mb-4 mt-0">{title}</h1>
 				<div class="text-[0.9rem] text-muted flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
