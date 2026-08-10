@@ -100,6 +100,15 @@ Tools like [Canva](https://www.canva.com/) or [Figma](https://www.figma.com/) ca
 3. Export as PNG
 4. Save to `/public/og/`
 
+### Compress
+
+Use this command to compress image and reduce it size
+
+```bash
+pngquant --quality=80-90 --ext -compressed.png serverless-1-og-en.png
+```
+
+
 ## Best Practices
 
 1. **Keep text readable**: Use large, clear fonts (minimum 32px)
