@@ -364,3 +364,24 @@ pre::-webkit-scrollbar-thumb:hover { background: var(--accent-border); }
 .prose :where(tr):hover {
     background-color: var(--bg-hover);
 }
+
+/* Wide tables (e.g. comparison tables) scroll inside a contained box instead
+   of overflowing the article column / viewport. The .table-scroll wrapper is
+   injected around every Markdown <table> by wrapTablesInScrollContainer(). */
+.table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 2rem 0; /* keep the vertical rhythm the typography plugin gave <table> */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-tint-strong) transparent;
+}
+.table-scroll table {
+    margin: 0;
+}
+.table-scroll::-webkit-scrollbar { height: 8px; }
+.table-scroll::-webkit-scrollbar-track { background: transparent; }
+.table-scroll::-webkit-scrollbar-thumb {
+    background: var(--accent-tint-strong);
+    border-radius: 4px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover { background: var(--accent-border); }

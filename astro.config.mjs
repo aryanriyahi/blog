@@ -64,6 +64,44 @@ function pagefindDevServer() {
 	};
 }
 
+// Wrap every rendered Markdown <table> in a div.table-scroll (a contained
+// overflow box). Wide tables — like the Serverless comparison table — then
+// scroll horizontally *inside themselves* instead of overflowing the article
+// column, overlapping the ToC, or forcing a viewport-level horizontal scroll.
+// See `.table-scroll` in src/styles/global.css for the styling.
+function wrapTablesInScrollContainer() {
+	/**
+	 * @param {any} tree  rehype HAST root
+	 */
+	return (tree) => {
+		/**
+		 * @param {any} node  HAST element/root node being traversed
+		 */
+		const wrap = (node) => {
+			if (!node.children) return;
+			// Recurse over the ORIGINAL children, and never into the wrapper
+			// divs we create, or the table would get wrapped infinitely.
+			const original = node.children;
+			const children = [];
+			for (const child of original) {
+				if (child.type === 'element' && child.tagName === 'table') {
+					children.push({
+						type: 'element',
+						tagName: 'div',
+						properties: { class: 'table-scroll' },
+						children: [child],
+					});
+				} else {
+					children.push(child);
+				}
+			}
+			node.children = children;
+			for (const child of original) wrap(child);
+		};
+		wrap(tree);
+	};
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://aryan.example.com',
@@ -82,6 +120,9 @@ export default defineConfig({
       },
       defaultColor: false,
     },
+    // Wide tables scroll inside a .table-scroll wrapper instead of
+    // overflowing the article layout (see wrapTablesInScrollContainer).
+    rehypePlugins: [wrapTablesInScrollContainer],
   },
   i18n: {
     defaultLocale: "fa",
