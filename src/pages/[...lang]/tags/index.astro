@@ -55,7 +55,7 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1] || a[0].
 				))}
 			</div>
 		) : (
-			<p class="text-faint italic">{currentLang === 'fa' ? 'برچسبی یافت نشد.' : 'No tags found.'}</p>
+			<p class="text-faint italic">{currentLang === 'fa' ? 'برچسبی یافت نشد.' : currentLang === 'de' ? 'Keine Tags gefunden.' : 'No tags found.'}</p>
 		)}
 	</section>
 </BaseLayout>

@@ -1,13 +1,17 @@
 # 1. Project overview
 
-This is an [Astro](https://astro.build) static-site blog, bilingual with
-**Persian (fa)** as the default language and **English (en)** as secondary.
+This is an [Astro](https://astro.build) static-site blog, trilingual with
+**Persian (fa)** as the default language, **English (en)** and
+**German (de)** as secondary locales.
 Astro takes your Markdown posts + page templates and builds plain
 HTML/CSS/JS that you can host anywhere for free. No database, no server, no
 backend to maintain.
 
 The site is styled with **Tailwind CSS v4**. It supports **RTL** automatically
-for Persian and has a built-in **dark / light theme toggle**.
+for Persian and has a built-in **dark / light theme toggle**. An edge worker
+(`src/worker.js`) redirects visitors to the right locale based on their
+country (IR → fa, DE/AT/CH/LI → de, otherwise en) unless they picked a
+language manually.
 
 ## Folder structure
 
@@ -22,10 +26,12 @@ blog/
     ├── content/
     │   ├── blog/          ← ✍️  YOUR POSTS LIVE HERE
     │   │   ├── fa/            (Persian posts — default language)
-    │   │   └── en/            (English posts)
+    │   │   ├── en/            (English posts)
+    │   │   └── de/            (German posts)
     │   └── pages/         ← standalone pages (e.g. About), per language
     │       ├── fa/            (Persian about page)
-    │       └── en/            (English about page)
+    │       ├── en/            (English about page)
+    │       └── de/            (German about page)
     ├── components/        ← reusable UI pieces
     │   ├── Header.astro       (top nav + language & theme switchers)
     │   ├── Footer.astro       (bottom footer)

@@ -5,7 +5,8 @@
  * in dist/ are served. Decides the locale:
  *   1. A `preferredLang` cookie (set when the user manually switches) — wins.
  *   2. Otherwise, IP geolocation via `request.cf.country` — Iran ("IR") -> fa,
- *      everyone else -> en.
+ *      German-speaking countries ("DE", "AT", "CH", "LI") -> de, everyone
+ *      else -> en.
  *
  * If the resolved locale differs from the URL's locale, we issue a 302
  * redirect to the correct locale path; otherwise we serve the matching static
@@ -16,7 +17,19 @@
  */
 
 const PREF_COOKIE = 'preferredLang';
-const VALID = ['fa', 'en'];
+const VALID = ['fa', 'en', 'de'];
+
+/**
+ * Country -> locale mapping used when the visitor has no saved preference.
+ * Iran -> fa, German-speaking countries -> de, everyone else -> en.
+ */
+const GEO_MAP = {
+	IR: 'fa',
+	DE: 'de',
+	AT: 'de',
+	CH: 'de',
+	LI: 'de',
+};
 
 /** Read a single cookie value from the Cookie header, or null. */
 function getCookie(request, name) {
@@ -32,20 +45,20 @@ function getCookie(request, name) {
 	return null;
 }
 
-/** Locale encoded in the pathname: '' -> fa (default), 'en' -> en. */
+/** Locale encoded in the pathname: '' -> fa (default), otherwise the first segment if valid. */
 function currentLang(pathname) {
 	if (pathname === '/' || pathname === '') return 'fa';
 	const first = pathname.split('/').filter(Boolean)[0];
-	return first === 'en' ? 'en' : 'fa';
+	return VALID.includes(first) ? first : 'fa';
 }
 
 /** Rewrite the pathname to the given locale, preserving the rest of the route. */
 function toLocalePath(locale, pathname) {
 	const segments = pathname.split('/').filter(Boolean);
-	if (segments[0] === 'en') segments.shift();
+	if (segments[0] !== 'fa' && VALID.includes(segments[0])) segments.shift();
 
 	const parts = [];
-	if (locale === 'en') parts.push('en');
+	if (locale !== 'fa') parts.push(locale);
 	parts.push(...segments);
 
 	let result = '/' + parts.join('/');
@@ -69,7 +82,10 @@ export default {
 		const cookieLang = getCookie(request, PREF_COOKIE);
 		const saved = VALID.includes(cookieLang) ? cookieLang : null;
 
-		const wanted = saved || ((request.cf && request.cf.country) === 'IR' ? 'fa' : 'en');
+		const wanted =
+			saved ||
+			GEO_MAP[request.cf && request.cf.country] ||
+			'en';
 		const cur = currentLang(url.pathname);
 
 		if (wanted !== cur) {

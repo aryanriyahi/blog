@@ -23,12 +23,14 @@ export const AUTHOR = {
   role: {
     fa: 'مهندس نرم‌افزار',
     en: 'Software Engineer',
+    de: 'Softwareingenieur',
   },
 
   /** Your short bio */
   bio: {
     fa: 'یه طرفدار تکنولوژی که عاشق ساختن و یادگیریه!',
     en: 'A tech-savvy who loves building and learning!',
+    de: 'Ein Technikbegeisterter, der gerne baut und lernt!',
   },
 
   /** Profile picture path (from /src/assets folder) */

@@ -60,7 +60,7 @@ if (isPost && route) {
 								const targetSlug = matchedPost.id.replace(`${abbr}/`, '');
 								targetRoute = `blog/${targetSlug}/`;
 							} else {
-								targetRoute = 'archive/';
+								targetRoute = 'blog/';
 							}
 						}
 						
@@ -110,7 +110,7 @@ if (isPost && route) {
 	document.querySelectorAll('.lang-switch-link').forEach((link) => {
 		link.addEventListener('click', () => {
 			const abbr = link.getAttribute('data-lang-save');
-			if (abbr === 'fa' || abbr === 'en') {
+			if (abbr && ['fa', 'en', 'de'].includes(abbr)) {
 				try {
 					localStorage.setItem('preferredLang', abbr);
 				} catch (e) {

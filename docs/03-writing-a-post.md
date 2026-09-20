@@ -10,6 +10,7 @@ Posts live in **`src/content/blog/`**, split by language:
 ```
 src/content/blog/fa/my-post.md  →  /blog/my-post/        (Persian, default)
 src/content/blog/en/my-post.md  →  /en/blog/my-post/     (English)
+src/content/blog/de/my-post.md  →  /de/blog/my-post/     (German)
 ```
 
 Use lowercase, hyphenated filenames: `using-docker-volumes.md`, not
@@ -48,8 +49,8 @@ translationKey: 'my-post'       # optional — links the Persian & English versi
 - **`pubDate`** (required) — publish date. Astro parses many formats, e.g.
   `'2026-08-04'`, `'Aug 04 2026'`. Pick one and be consistent.
 - **`tags`** (optional) — a list of tags; each opens a `/tags/<tag>/` page.
-- **`translationKey`** (optional) — used to link the Persian and English
-  versions of the same post (see below).
+- **`translationKey`** (optional) — used to link the Persian, English, and
+  German versions of the same post (see below).
 
 > If you forget a required field, `npm run build` will fail with a clear error
 > telling you which field is missing from which file.

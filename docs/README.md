@@ -11,7 +11,7 @@ need each topic.
 
 | # | Guide | What you'll learn |
 |---|-------|-------------------|
-| 1 | [Project overview](./01-project-overview.md) | How the project is laid out, how a Markdown file becomes a web page, bilingual routes |
+| 1 | [Project overview](./01-project-overview.md) | How the project is laid out, how a Markdown file becomes a web page, trilingual routes |
 | 2 | [Running locally](./02-running-locally.md) | Start the dev server, build the site, preview your build |
 | 3 | [Writing a blog post](./03-writing-a-post.md) | Create Persian/English posts, frontmatter, translation keys, images |
 | 4 | [Modifying the layout](./04-modifying-the-layout.md) | The post page, Tailwind utilities, theme colors, dark/light toggle |
@@ -35,7 +35,8 @@ need each topic.
 |------|-------|
 | Persian posts | `src/content/blog/fa/*.md` |
 | English posts | `src/content/blog/en/*.md` |
-| About pages | `src/content/pages/{fa,en}/about.md` |
+| German posts | `src/content/blog/de/*.md` |
+| About pages | `src/content/pages/{fa,en,de}/about.md` |
 | Site name, author & socials | `src/config.ts` |
 | Language labels / nav | `src/i18n/ui.ts` |
 | Homepage | `src/pages/[...lang]/index.astro` |

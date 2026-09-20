@@ -1,20 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const lang = getLangFromUrl(Astro.url);
-const isFa = lang === 'fa';
+const t = useTranslations(lang);
 
 const content = {
-    title: isFa ? '۴۰۴ | صفحه یافت نشد' : '404 | Page Not Found',
+    title: t('notFound.title'),
     heading: '404',
-    sub: isFa ? 'صفحه یافت نشد.' : 'Page not found.',
-    body: isFa
-        ? 'صفحه‌ای که دنبال آن هستید ممکن است جابه‌جا شده، حذف شده یا هرگز وجود نداشته باشد. گاهی گم شدن، نقطه شروع است.'
-        : `The page you're looking for may have moved, been deleted, or never existed. Sometimes getting lost is where it starts.`,
-    home: isFa ? 'بازگشت به خانه' : 'Return home',
-    archive: isFa ? 'مشاهده نوشته‌ها' : 'Browse posts',
+    sub: t('notFound.sub'),
+    body: t('notFound.body'),
+    home: t('notFound.home'),
+    archive: t('notFound.archive'),
     homeHref: getRelativeLocaleUrl(lang, ''),
     archiveHref: getRelativeLocaleUrl(lang, 'blog'),
 };

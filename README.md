@@ -1,10 +1,11 @@
 # Aryan's Blog
 
-A minimalist, fast, bilingual (Persian / English) blog built with **Astro**
-and **Tailwind CSS v4**. Persian (Farsi) is the default language with full
-**RTL** support; English is available under `/en/`.
+A minimalist, fast, trilingual (Persian / English / German) blog built with
+**Astro** and **Tailwind CSS v4**. Persian (Farsi) is the default language with
+full **RTL** support; English is available under `/en/` and German under `/de/`.
 
-- 🌐 Default **Persian (fa)** at `/`, **English (en)** at `/en/`
+- 🌐 Default **Persian (fa)** at `/`, **English (en)** at `/en/`, **German (de)** at `/de/`
+- 📍 Geo-aware **language detection** on the edge (Iran → fa, DE/AT/CH/LI → de, else en)
 - 🌗 Dark / light theme toggle (persisted, no flash-of-wrong-theme)
 - ↔️ Fully **RTL**-aware layout with logical CSS properties
 - ✍️ MDX + Markdown, Shiki syntax highlighting (dual dark/light themes)
@@ -15,9 +16,9 @@ and **Tailwind CSS v4**. Persian (Farsi) is the default language with full
 
 ## ✨ Features
 
-- **i18n with smart translation mapping** — posts in `fa/` and `en/` are
+- **i18n with smart translation mapping** — posts in `fa/`, `en/`, and `de/` are
   linked with a shared `translationKey`; the header language switcher jumps
-  straight to the translated post (or the target language's archive).
+  straight to the translated post (or the target language's blog listing).
 - **Dark / light theme** — a sun/moon toggle switches `data-theme` on
   `<html>`, driven by CSS custom properties. Light/dark choice is saved in
   `localStorage` and system preference is followed until you choose.
@@ -85,10 +86,11 @@ npx astro check    # type-check .astro files
     ├── styles/
     │   └── global.css      # 🌗 theme tokens + Tailwind v4 entry
     └── content/
-        ├── blog/           # ✍️ posts: fa/ and en/ sub-folders
+        ├── blog/           # ✍️ posts: fa/, en/, and de/ sub-folders
         │   ├── fa/         #   Persian posts (default)
-        │   └── en/         #   English posts
-        └── pages/          # about page: fa/ and en/
+        │   ├── en/         #   English posts
+        │   └── de/         #   German posts
+        └── pages/          # about page: fa/, en/, and de/
 ```
 
 ---
@@ -135,14 +137,22 @@ export default defineConfig({
 Edit nav/menu strings or add locales:
 
 ```ts
-export const languages = { fa: 'فارسی', en: 'English' };
+export const languages = { fa: 'فارسی', en: 'English', de: 'Deutsch' };
 export const defaultLang = 'fa';
 
 export const ui = {
   fa: { 'nav.home': 'خانه', 'nav.archive': 'بایگانی', … },
   en: { 'nav.home': 'Home', 'nav.archive': 'Archive', … },
+  de: { 'nav.home': 'Start', 'nav.archive': 'Blog', … },
 };
 ```
+
+Adding a new language means three more spots: register the locale in
+`astro.config.mjs` (`i18n.locales`), add a folder under
+`src/content/blog/<lang>/` (plus `src/content/pages/<lang>/` for the about page),
+and — because pagination isn't part of the `[...lang]` catch-all — copy
+`src/pages/en/blog/[...page].astro` to `src/pages/<lang>/blog/[...page].astro`
+with the new locale.
 
 ### Theme colors — `src/styles/global.css`
 
@@ -166,8 +176,9 @@ automatically).
 
 ## ✍️ Writing a post
 
-Posts live in `src/content/blog/<lang>/`. To write a bilingual post, create
-one file in each language and link them with the **same** `translationKey`:
+Posts live in `src/content/blog/<lang>/` (`fa/`, `en/`, `de/`). To write a
+translated post, create one file in each language and link them with the
+**same** `translationKey`:
 
 `src/content/blog/fa/my-post.md` (frontmatter):
 
@@ -190,6 +201,18 @@ description: 'Short summary'
 pubDate: '2026-08-04'
 tags: ['astro', 'writing']
 translationKey: 'my-post'   # must match the Persian file exactly
+---
+```
+
+`src/content/blog/de/my-post.md` (frontmatter):
+
+```yaml
+---
+title: 'Mein Beitrag'
+description: 'Kurze Zusammenfassung'
+pubDate: '2026-08-04'
+tags: ['astro', 'writing']
+translationKey: 'my-post'   # must match the other files exactly
 ---
 ```
 
@@ -216,7 +239,8 @@ Before deploying, set `site` in `astro.config.mjs` to your real domain so the
 RSS feed and canonical URLs are correct.
 
 > [`src/worker.js`](src/worker.js) powers the **auto language redirect**:
-> visitors from Iran get Persian, everyone else gets English, and a manual
+> visitors from Iran get Persian, visitors from German-speaking countries
+> (DE / AT / CH / LI) get German, everyone else gets English, and a manual
 > choice (the `preferredLang` cookie set by the header switcher) is always
 > respected. It runs on every request via `run_worker_first` in
 > `wrangler.toml`. See

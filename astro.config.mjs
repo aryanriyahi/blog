@@ -126,7 +126,7 @@ export default defineConfig({
   },
   i18n: {
     defaultLocale: "fa",
-    locales: ["fa", "en"],
+    locales: ["fa", "en", "de"],
     routing: {
       prefixDefaultLocale: false
     }
@@ -136,5 +136,6 @@ export default defineConfig({
   redirects: {
     '/archive': '/blog/',
     '/en/archive': '/en/blog/',
+    '/de/archive': '/de/blog/',
   },
 });

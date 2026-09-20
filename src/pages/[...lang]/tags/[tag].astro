@@ -43,6 +43,8 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const pageTitle = `${SITE_CONFIG.title} | #${tag}`;
 const pageDescription = currentLang === 'fa' 
   ? `همه نوشته‌های دارای برچسب "${tag}"` 
+  : currentLang === 'de'
+  ? `Alle Beiträge mit dem Tag "${tag}"`
   : `All posts tagged with "${tag}"`;
 ---
 
@@ -78,7 +80,7 @@ const pageDescription = currentLang === 'fa'
 				})}
 			</ul>
 		) : (
-			<p class="text-faint italic">{currentLang === 'fa' ? 'نوشته‌ای با این برچسب یافت نشد.' : 'No posts found with this tag.'}</p>
+			<p class="text-faint italic">{currentLang === 'fa' ? 'نوشته‌ای با این برچسب یافت نشد.' : currentLang === 'de' ? 'Keine Beiträge mit diesem Tag gefunden.' : 'No posts found with this tag.'}</p>
 		)}
 	</section>
 </BaseLayout>

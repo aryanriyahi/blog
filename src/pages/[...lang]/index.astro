@@ -26,7 +26,7 @@ const posts: CollectionEntry<'blog'>[] = await getCollection('blog', (post: Coll
 });
 posts.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const archiveLabel = currentLang === 'fa' ? 'همه نوشته‌ها →' : 'All posts →';
+const archiveLabel = currentLang === 'fa' ? 'همه نوشته‌ها →' : currentLang === 'de' ? 'Alle Beiträge →' : 'All posts →';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} image="/og.png">

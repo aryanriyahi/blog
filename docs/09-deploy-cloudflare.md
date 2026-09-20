@@ -71,7 +71,7 @@ https://your-blog.pages.dev
 ```
 
 The static `404.html` Astro generates is served automatically for missing
-routes, and the `/en/…` and `/fa/…` paths work out of the box.
+routes, and the `/en/…`, `/de/…`, and `/fa/…` paths work out of the box.
 
 ---
 
@@ -149,3 +149,13 @@ With the **CLI**, re-run `npx wrangler pages deploy`. Always build first:
   static assets, free HTTPS, global CDN).
 - Cloudflare Pages is **stateless** — your blog is plain static HTML/CSS/JS,
   so there's no server to maintain or scale.
+- This repo deploys as **static assets + edge worker** (`src/worker.js`, wired
+  up in `wrangler.toml` with `run_worker_first = true`). The worker runs on
+  every document request and picks the locale: the `preferredLang` cookie wins
+  (set by the header language switcher), otherwise the visitor's country is
+  used — `IR` → Persian, `DE` / `AT` / `CH` / `LI` → German, anything else →
+  English — and a `302` redirect is issued when the URL language differs.
+  `request.cf.country` is only available on Cloudflare, which is why this
+  feature lives in the worker; every other host simply serves the static files.
+- Non-HTML requests (images, CSS, JS, fonts, the RSS/Pagefind output) bypass
+  the redirect logic entirely, so the CDN cache is unaffected.
