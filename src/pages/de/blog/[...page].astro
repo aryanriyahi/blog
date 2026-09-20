@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogPostCard from '../../../components/BlogPostCard.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { useTranslations } from '../../../i18n/utils';
+import { POSTS_PER_PAGE, SITE_CONFIG } from '../../../config';
+
+const locale = 'de';
+
+interface Props {
+	page: Page<CollectionEntry<'blog'>>;
+}
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+	const posts = (
+		await getCollection('blog', ({ id }) => id.startsWith('de/'))
+	).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+	return paginate(posts, { pageSize: POSTS_PER_PAGE });
+};
+
+const { page } = Astro.props;
+const t = useTranslations(locale);
+
+const pageTitle = `${SITE_CONFIG.title} | ${t('archive.title')}`;
+const pageDescription = t('archive.description');
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+	<section class="mb-8">
+		<h1>{t('archive.title')}</h1>
+		<p class="m-0">{t('archive.description')}</p>
+	</section>
+
+	<section>
+		<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 2xl:grid-cols-5">
+			{page.data.map((post) => (
+				<BlogPostCard post={post} lang={locale} />
+			))}
+		</div>
+	</section>
+
+	<Pagination
+		currentPage={page.currentPage}
+		totalPages={page.lastPage}
+		base="/de/blog"
+		lang={locale}
+	/>
+</BaseLayout>
