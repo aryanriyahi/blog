@@ -27,9 +27,17 @@ const t = useTranslations(lang);
 	<pagefind-config lang={lang}></pagefind-config>
 	<pagefind-modal id="pagefind-search-dialog" class="pagefind-search" reset-on-close></pagefind-modal>
 
+	{/*
+		`hidden` is used as an ATTRIBUTE (not Tailwind's `hidden` class) because
+		the script below toggles `fallback.hidden`. The Tailwind class would keep
+		`display: none` applied even after the attribute is removed, so the
+		message would never become visible. Tailwind v4's preflight styles the
+		attribute itself: `[hidden]:where(:not([hidden=until-found]))`.
+	*/}
 	<p
 		id="pagefind-search-error"
-		class="fixed inset-x-0 bottom-6 z-50 mx-auto hidden w-max max-w-[min(92vw,32rem)] rounded-md border border-accent-border bg-bg-panel px-4 py-2.5 text-xs leading-relaxed text-soft shadow-lg"
+		hidden
+		class="fixed inset-x-0 bottom-6 z-50 mx-auto w-max max-w-[min(92vw,32rem)] rounded-md border border-accent-border bg-bg-panel px-4 py-2.5 text-xs leading-relaxed text-soft shadow-lg"
 		role="status"
 	>
 		{t('search.notAvailable')}
@@ -49,11 +57,25 @@ const t = useTranslations(lang);
 
 	/** True once the Pagefind bundle has been fetched and evaluated. */
 	let loaded = false;
-	/** Guards against re-entrancy while the import is in flight. */
+	/** Guards against re-entrancy while the bundle is loading. */
 	let loading = false;
 	let fallbackTimer: number | undefined;
 
-	/** Fetch CSS + JS only on first use (dynamic import of the ES module). */
+	/**
+	 * Fetch CSS + JS only on first use by injecting the tags Pagefind documents
+	 * (`<link rel="stylesheet">` + `<script type="module" src>`).
+	 *
+	 * NOTE: do NOT use `await import('/pagefind/pagefind-component-ui.js')` here.
+	 * Vite rewrites every dynamic import() inside a bundled client script to
+	 * `__vitePreload(() => import(…), __VITE_PRELOAD__)`, and the
+	 * `__VITE_PRELOAD__` placeholder is only substituted for the chunks that stay
+	 * in the Rollup bundle. Astro deletes/inlines small script chunks instead
+	 * (see `shouldInlineScriptChunk` in
+	 * node_modules/astro/dist/core/build/plugins/plugin-scripts.js), leaving the
+	 * raw placeholder in the HTML — which throws
+	 * `ReferenceError: __VITE_PRELOAD__ is not defined` on click. Injecting a
+	 * real <script> element keeps the file completely out of Vite's module graph.
+	 */
 	async function loadPagefind(): Promise<void> {
 		if (loaded || loading) return;
 
@@ -65,9 +87,18 @@ const t = useTranslations(lang);
 			uiCss.href = '/pagefind/pagefind-component-ui.css';
 			document.head.appendChild(uiCss);
 
-			// The Pagefind Component UI is a real ES module — import() it on demand.
-			const uiJs = '/pagefind/pagefind-component-ui.js';
-			await import(/* @vite-ignore */ uiJs);
+			await new Promise<void>((resolve, reject) => {
+				const uiJs = document.createElement('script');
+				uiJs.type = 'module';
+				uiJs.src = '/pagefind/pagefind-component-ui.js';
+				uiJs.addEventListener('load', () => resolve(), { once: true });
+				uiJs.addEventListener(
+					'error',
+					() => reject(new Error('Pagefind UI script failed to load')),
+					{ once: true },
+				);
+				document.head.appendChild(uiJs);
+			});
 
 			loaded = true;
 		} finally {
