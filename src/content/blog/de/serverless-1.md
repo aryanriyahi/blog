@@ -16,7 +16,7 @@ Diese Wartung bedeutet:
 - Hardware-Skalierung
 - Server-Konfiguration
 - Sicherheitsupdates
-- Installation und Konfiguration eines Webservers (z. B. nginx, apache)
+- Installation und Konfiguration eines Webservers (z. B. NGINX, Apache)
 - Load Balancer
 
 Das heißt, du konzentrierst dich nur und ausschließlich auf das Schreiben deines Codes und schiebst die ernsten und schwierigen Verantwortlichkeiten jemand anderem zu XD
@@ -31,7 +31,7 @@ Da die Server-Typen immer zahlreicher werden, halte ich es für besser, statt vi
 
 | Vergleichskriterium | Shared Server | Dedicated Server | VPS | PaaS | Serverless |
 | --- | --- | --- | --- | --- | --- |
-| **Grundlegende Definition** | Ein physischer Server und seine Ressourcen werden unter hunderten Websites geteilt | Ein vollständig dedizierter physischer Server im Rechenzentrum | Eine virtualisierte Schicht (VM) mit dedizierten Ressourcen auf einem Host-Server | Eine verwaltete Plattform zum direkten Ausführen und Deployen von Code | Eine ereignisgesteuerte Architektur mit sofortiger Codeausführung und automatischer Skalierung |
+| **Grundlegende Definition** | Ein physischer Server und seine Ressourcen werden unter hunderten Websites geteilt | Ein vollständig dedizierter physischer Server im Rechenzentrum | Eine virtualisierte Schicht (VM) mit dedizierten Ressourcen auf einem Host-Server | Eine verwaltete Plattform zum direkten Ausführen und dem Deployment von Code | Eine ereignisgesteuerte Architektur mit sofortiger Codeausführung und automatischer Skalierung |
 | **Zugriffs- und Kontrollebene** | **Null,** nur Zugriff auf das Control Panel | **100 %,** vollständiger Root/SSH- und BIOS-/Hardware-Zugriff | **Hoch,** vollständiger Root/SSH-Zugriff auf das virtuelle OS | **Begrenzt,** Zugriff nur auf Anwendungseinstellungen und Environment Variables | **Null,** kein Zugriff auf OS oder Infrastruktur |
 | **Infrastruktur- und OS-Verwaltung** | Vom Anbieter übernommen | Vollständig deine Verantwortung | Vollständig deine Verantwortung | Vom Anbieter übernommen | Vom Anbieter übernommen |
 | **Preismodell** | Feste monatliche/jährliche Miete (sehr günstig) | Feste monatliche/jährliche Miete (sehr teuer) | Feste monatliche/stündliche Miete basierend auf reservierten Ressourcen | Basierend auf der Anzahl der Instanzen und reserviertem RAM/CPU | **Genau basierend auf der tatsächlichen Nutzung** (Anzahl der Requests + Ausführungszeit in Millisekunden) |
@@ -43,7 +43,7 @@ Da die Server-Typen immer zahlreicher werden, halte ich es für besser, statt vi
 | **Isolierung und Sicherheit** | **Niedrig,** eine Schwachstelle auf einer Website kann die anderen gefährden | **Maximal,** die Hardware ist vollständig isoliert | **Gut,** Isolierung auf Hypervisor-/VM-Ebene | **Hoch,** Isolierung auf Container-Ebene | **Sehr hoch,** jeder Request läuft in einer isolierten Micro-VM/Sandbox |
 | **DevOps-Komplexität und Wartung** | **Null** | **Sehr hoch** | **Mittel bis hoch** | **Niedrig** | **Sehr niedrig** |
 | **Beispiele bekannter Anbieter** | Bluehost | Hetzner | Hetzner Cloud, DigitalOcean | AWS Elastic Beanstalk, Google App Engine | AWS Lambda, Cloudflare Workers, Google Cloud Run, Vercel |
-| **Welche Art von Projekt braucht das?** | Kleine Unternehmensseiten, einfache WordPress-Blogs | Bankensysteme, sehr große Datenbanken, schwere Verarbeitung | Mittelgroße Projekte, Standard-APIs, Dockerisierte Apps | Startups, MVPs, Projekte bei denen Entwicklungsgeschwindigkeit zählt | Ereignisgesteuerte APIs, Systeme mit plötzlichem und sinusförmigem Traffic |
+| **Welche Art von Projekt braucht das?** | Kleine Unternehmensseiten, einfache WordPress-Blogs | Bankensysteme, sehr große Datenbanken, schwere Verarbeitung | Mittelgroße Projekte, Standard-APIs, containerisierte Apps | Startups, MVPs, Projekte bei denen Entwicklungsgeschwindigkeit zählt | Ereignisgesteuerte APIs, Systeme mit plötzlichem und sinusförmigem Traffic |
 
 Wie wir in der Tabelle gesehen haben: Wenn wir unseren Server mit einem Haus vergleichen, sähe jedes so aus:
 
@@ -51,7 +51,7 @@ Wie wir in der Tabelle gesehen haben: Wenn wir unseren Server mit einem Haus ver
 - **Dedicated Server**: Leeres privates Haus
 - **VPS**: Private Mietwohnung
 - **PaaS**: Hotel
-- **Serverless**: Stundenhotel
+- **Serverless**: Hotel mit stundenweiser Abrechnung
 
 Ich versuche später auch über diese **as a Service**-Sachen zu schreiben (z. B.: IaaS, PaaS ...)
 
@@ -74,7 +74,7 @@ Stell dir in einem Online-Shop vor, dass du nach jeder erfolgreichen Bestellung 
 4.  Eine Nachricht an das Postsystem senden, um das Paket vorzubereiten
 
 Findest du es sinnvoll, dass der Nutzer nach seinem Kauf darauf warten muss, dass wir all das auch erledigen?
-Absolut nicht – für so ein Szenario triggern wir ein Event, das diese Dinge im Hintergrund von selbst erledigt.
+Absolut nicht – für so ein Szenario lösen wir ein Event aus, das diese Dinge im Hintergrund von selbst erledigt.
 Vielleicht sagst du jetzt: Was hat das überhaupt mit Serverless zu tun? Wir können RabbitMQ oder Kafka nutzen, um diese Events zu verarbeiten, und fertig! Ja, das stimmt, aber bei diesem Ansatz gibt es diese Probleme:
 
 - Dein Server braucht genug Hardware, um den Message Broker auszuführen, und wenn nicht, musst du aufrüsten
@@ -88,7 +88,7 @@ Der einfachere Weg ist Serverless: Du weckst es nur, wenn du es brauchst, lässt
 
 Angenommen, es ist Black Friday und plötzlich steigt der Traffic der Website und du bekommst jede Menge Bestellungen
 Der Server skaliert ohne jede Mühe und bricht unter der Last nicht zusammen. Wäre es ein normaler Server, würde er unter dem Druck auseinanderfallen.
-In Szenarien, in denen keine Fliege herumfliegt, wie oben gesagt: Er schläft ein und deine Kosten werden 0.
+In Szenarien, in denen absolut kein Traffic herrscht, wie oben gesagt: Er schläft ein und deine Kosten werden 0.
 
 ### Persönliche Projekte und MVPs
 
@@ -137,5 +137,5 @@ Ich empfehle dir auch, mit Cloudflare anzufangen, falls dich die Liste oben verw
 
 ## Schlussbemerkung
 Dieser Teil war nur eine erste Einführung. In den nächsten Teilen gehe ich auf die verschiedenen Arten von Serverless ein und wir lernen gemeinsam mehr Details.
-Bleib bei mir <3
+Bleib dran <3
 

@@ -5,8 +5,8 @@ description: "Über Aryan Riyahi und diesen Blog."
 
 # Über
 
-Hallo, ich bin **Aryan**. Ich bin Programmierer und **liebe moderne und innovative Technologien!**
-2022 habe ich meinen ersten Job in der Programmierung als **.NET Back-End Developer** bekommen.
+Hallo, ich bin **Aryan**. Ich bin Softwareentwickler und **liebe moderne und innovative Technologien!**
+2022 startete ich meine berufliche Laufbahn in der Entwicklung als **.NET Backend Developer**.
 Seitdem habe ich mit vielen Tools und an verschiedenen Projekten gearbeitet, aber mein Schwerpunkt lag meistens auf **.NET**.
 
 
@@ -22,7 +22,7 @@ Ich kenne mich ein wenig mit Infrastruktur und **DevOps**-Konzepten aus und inte
 
 Ich bin ein großer Fan von **KI** und versuche, bei den Trends nicht den Anschluss zu verlieren (auch wenn das wirklich schwer ist), und ich beschäftige mich kontinuierlich damit.
 
-Ich habe Frontend mehrere Male ausprobiert, aber das Ergebnis war nie zufriedenstellend :) Doch ich bin sicher: **Eines Tages werde ich auch das meistern :)**
+Ich habe mich mehrmals am Frontend versucht, aber das Ergebnis war nie ganz zufriedenstellend :) Doch ich bin sicher: **Eines Tages werde ich auch das meistern :)**
 
 
 Ich habe mein Studium der *Informatik* an der *Islamic Azad University – Science and Research Branch* abgeschlossen.
@@ -60,7 +60,7 @@ Ich versuche, die Dinge in **einfacher und gesprochener Sprache** zu erklären. 
 
 Der Blog selbst und seine Inhalte sind **Open Source** und unter der [MIT-Lizenz](https://opensource.org/licenses/MIT) lizenziert. Du findest ihn [hier](https://github.com/aryanriyahi/blog).
 
-Er ist mit **Astro** geschrieben, vollständig **SSG** und kostenlos auf **Cloudflare Workers** deployt.
+Er basiert auf **Astro**, ist vollständig **SSG** und kostenlos über **Cloudflare Pages / Workers** bereitgestellt.
 
 ## Kontakt
 

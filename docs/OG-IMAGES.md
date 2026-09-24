@@ -108,6 +108,12 @@ Use this command to compress image and reduce it size
 pngquant --quality=80-90 --ext -compressed.png serverless-1-og-en.png
 ```
 
+### Resize
+Use this command to change picture dimensions
+
+```bash
+convert input.jpg -resize 1200x630^ -gravity center -extent 1200x630 output.jpg
+```
 
 ## Best Practices
 
